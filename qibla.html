@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>اتجاه القبلة - التطبيق الإسلامي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #d4af37;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 175, 55, 0.2);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .compass-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 40px auto;
+        }
+
+        .compass-outer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 30px rgba(212, 175, 55, 0.1);
+        }
+
+        .compass-inner {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #1a4d2e, #0d2818);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .compass-needle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease-out;
+        }
+
+        .needle {
+            position: absolute;
+            width: 4px;
+            height: 45%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to top, #d4af37, #ffd700);
+            border-radius: 2px;
+        }
+
+        .needle.south {
+            top: 55%;
+            background: linear-gradient(to bottom, #d4af37, #b8860b);
+        }
+
+        .needle.north {
+            top: 5%;
+        }
+
+        .kaaba-icon {
+            position: absolute;
+            font-size: 40px;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .qibla-indicator {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(145deg, #d4af37, #ffd700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            z-index: 20;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(212, 175, 55, 0.9);
+            }
+        }
+
+        .degree-marker {
+            position: absolute;
+            color: #d4af37;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .direction-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .direction-label {
+            position: absolute;
+            color: #d4af37;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .direction-label.n {
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .direction-label.e {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .direction-label.s {
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .direction-label.w {
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .info-value {
+            color: #d4af37;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .qibla-angle {
+            text-align: center;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .qibla-angle .angle {
+            font-size: 48px;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .qibla-angle .label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(212, 175, 55, 0.2);
+            border-top-color: #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(255, 82, 82, 0.2);
+            border: 1px solid rgba(255, 82, 82, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(145deg, #d4af37, #b8860b);
+            color: #1a4d2e;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .instructions {
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .instructions h3 {
+            color: #d4af37;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .instructions ol {
+            padding-right: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .distance-badge {
+            text-align: center;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .distance-badge .value {
+            font-size: 24px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .distance-badge .label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+        }
+
+        .compass-rose {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            ← العودة للرئيسية
+        </a>
+
+        <div class="header">
+            <h1>🧭 اتجاه القبلة</h1>
+            <p>Qibla Direction Finder</p>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>جاري تحديد موقعك...</p>
+            <p style="font-size: 12px; margin-top: 10px;">Getting your location...</p>
+        </div>
+
+        <div id="compass-section" style="display: none;">
+            <div class="compass-container">
+                <div class="compass-outer"></div>
+                <div class="direction-labels">
+                    <div class="direction-label n">ش N</div>
+                    <div class="direction-label e">E شرق</div>
+                    <div class="direction-label s">ج S</div>
+                    <div class="direction-label w">W غرب</div>
+                </div>
+                <div class="compass-inner">
+                    <div class="compass-needle" id="compassNeedle">
+                        <div class="needle north"></div>
+                        <div class="needle south"></div>
+                    </div>
+                    <div class="qibla-indicator" id="qiblaIndicator">كعبة</div>
+                </div>
+            </div>
+
+            <div class="qibla-angle">
+                <div class="angle" id="qiblaBearing">--°</div>
+                <div class="label">اتجاه القبلة من الشمال</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-row">
+                    <span class="info-label">خط العرض (Latitude)</span>
+                    <span class="info-value" id="latitude">--</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">خط الطول (Longitude)</span>
+                    <span class="info-value" id="longitude">--</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">زاوية القبلة</span>
+                    <span class="info-value" id="qiblaAngle">--</span>
+                </div>
+            </div>
+
+            <div class="distance-badge">
+                <div class="value" id="distanceToMakkah">--</div>
+                <div class="label">المسافة إلى مكة المكرمة</div>
+            </div>
+
+            <div class="instructions">
+                <h3>📝 كيفية الاستخدام</h3>
+                <ol>
+                    <li>امسك جهازك بشكل مستوٍ</li>
+                    <li>دوّر جهازك حتى تظهر أيقونة الكعبة في الأعلى</li>
+                    <li>الاتجاه الذي تشير إليه الكعبة هو اتجاه القبلة</li>
+                    <li>تأكد من أن البوصلة معايرة بشكل صحيح</li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="error-section" style="display: none;">
+            <div class="error">
+                <h3>⚠️ تعذر تحديد الموقع</h3>
+                <p id="error-message">يرجى تفعيل خدمة الموقع في إعدادات جهازك</p>
+                <button class="btn" onclick="getLocation()">إعادة المحاولة</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kaaba coordinates
+        const KAABA_LAT = 21.4225;
+        const KAABA_LNG = 39.8262;
+
+        let currentHeading = 0;
+        let qiblaBearing = 0;
+
+        // Calculate Qibla bearing using the spherical law of cosines
+        function calculateQibla(lat, lng) {
+            const phiK = KAABA_LAT * Math.PI / 180;
+            const lambdaK = KAABA_LNG * Math.PI / 180;
+            const phi = lat * Math.PI / 180;
+            const lambda = lng * Math.PI / 180;
+
+            const y = Math.sin(lambdaK - lambda);
+            const x = Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda);
+
+            let bearing = Math.atan2(y, x) * 180 / Math.PI;
+            if (bearing < 0) bearing += 360;
+
+            return bearing;
+        }
+
+        // Calculate distance to Makkah using Haversine formula
+        function calculateDistance(lat, lng) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (KAABA_LAT - lat) * Math.PI / 180;
+            const dLng = (KAABA_LNG - lng) * Math.PI / 180;
+
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat * Math.PI / 180) * Math.cos(KAABA_LAT * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c;
+
+            return distance;
+        }
+
+        // Format coordinates
+        function formatCoordinate(value, type) {
+            const degrees = Math.abs(value);
+            const minutes = (degrees % 1) * 60;
+            const seconds = (minutes % 1) * 60;
+            const direction = type === 'lat'
+                ? (value >= 0 ? 'N' : 'S')
+                : (value >= 0 ? 'E' : 'W');
+
+            return `${Math.floor(degrees)}°${Math.floor(minutes)}'${seconds.toFixed(1)}" ${direction}`;
+        }
+
+        // Update compass display
+        function updateCompass() {
+            const needle = document.getElementById('compassNeedle');
+            const qiblaIndicator = document.getElementById('qiblaIndicator');
+
+            // Rotate needle to show north (device heading)
+            needle.style.transform = `rotate(${currentHeading}deg)`;
+
+            // Position qibla indicator relative to north
+            // The qibla indicator should show where qibla is relative to the device
+            const relativeBearing = (qiblaBearing - currentHeading + 360) % 360;
+            qiblaIndicator.style.transform = `translateX(-50%) rotate(${relativeBearing}deg) translateY(-90px)`;
+        }
+
+        // Get user location
+        function getLocation() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('compass-section').style.display = 'none';
+            document.getElementById('error-section').style.display = 'none';
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    showPosition,
+                    showError,
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                showError({ message: "Geolocation is not supported by this browser" });
+            }
+        }
+
+        // Show position and calculate Qibla
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            // Calculate Qibla bearing
+            qiblaBearing = calculateQibla(lat, lng);
+            const distance = calculateDistance(lat, lng);
+
+            // Update display
+            document.getElementById('latitude').textContent = formatCoordinate(lat, 'lat');
+            document.getElementById('longitude').textContent = formatCoordinate(lng, 'lng');
+            document.getElementById('qiblaBearing').textContent = qiblaBearing.toFixed(1) + '°';
+            document.getElementById('qiblaAngle').textContent = qiblaBearing.toFixed(1) + '° من الشمال';
+            document.getElementById('distanceToMakkah').textContent = distance.toLocaleString('ar-EG', {
+                maximumFractionDigits: 0
+            }) + ' كم';
+
+            // Hide loading, show compass
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('compass-section').style.display = 'block';
+
+            // Try to get compass heading
+            initCompass();
+        }
+
+        // Initialize compass (device orientation)
+        function initCompass() {
+            if ('DeviceOrientationEvent' in window) {
+                // Check if we need permission (iOS 13+)
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(response => {
+                            if (response === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation);
+                            } else {
+                                // Permission denied, show static compass
+                                showStaticCompass();
+                            }
+                        })
+                        .catch(() => {
+                            // Error requesting permission, show static compass
+                            showStaticCompass();
+                        });
+                } else {
+                    // No permission needed, add listener directly
+                    window.addEventListener('deviceorientationabsolute', handleOrientation);
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            } else {
+                // Device orientation not supported
+                showStaticCompass();
+            }
+        }
+
+        // Handle device orientation
+        function handleOrientation(event) {
+            let heading = 0;
+
+            if (event.webkitCompassHeading) {
+                // iOS
+                heading = event.webkitCompassHeading;
+            } else if (event.alpha) {
+                // Android
+                heading = 360 - event.alpha;
+            }
+
+            currentHeading = heading;
+            updateCompass();
+        }
+
+        // Show static compass (when device orientation is not available)
+        function showStaticCompass() {
+            // Show the compass with qibla direction based on north
+            updateCompass();
+
+            // Add a note that live compass is not available
+            const instructions = document.querySelector('.instructions');
+            const note = document.createElement('p');
+            note.style.color = '#d4af37';
+            note.style.marginTop = '15px';
+            note.textContent = '⚠️ البوصلة الحية غير متاحة. استخدم بوصلة خارجية للاتجاه الدقيق نحو الشمال.';
+            instructions.appendChild(note);
+        }
+
+        // Show error
+        function showError(error) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error-section').style.display = 'block';
+
+            let message = 'حدث خطأ أثناء تحديد الموقع';
+
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message = 'يرجى السماح بالوصول إلى موقعك لتحديد اتجاه القبلة';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = 'تعذر تحديد موقعك الحالي';
+                    break;
+                case error.TIMEOUT:
+                    message = 'انتهت مهلة تحديد الموقع. يرجى المحاولة مرة أخرى';
+                    break;
+                default:
+                    message = error.message || 'حدث خطأ غير معروف';
+            }
+
+            document.getElementById('error-message').textContent = message;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            getLocation();
+        });
+    </script>
+</body>
+</html>

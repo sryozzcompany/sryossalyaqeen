@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الأحاديث النبوية - التطبيق الإسلامي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a4d2e 0%, #1a7a4c 50%, #0d5c38 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d4af37 0%, #f4cf67 50%, #d4af37 100%);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            color: #0a4d2e;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #1a7a4c;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #0a4d2e, #1a7a4c);
+            color: #fff;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-tab {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #d4af37, #f4cf67);
+            color: #0a4d2e;
+            border-color: #d4af37;
+        }
+
+        .category-tab:hover {
+            background: rgba(212, 175, 55, 0.3);
+        }
+
+        .category-tab.active:hover {
+            background: linear-gradient(135deg, #d4af37, #f4cf67);
+        }
+
+        .hadith-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .hadith-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            color: #d4af37;
+        }
+
+        .card-source {
+            background: linear-gradient(135deg, #d4af37, #f4cf67);
+            color: #0a4d2e;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .narrator {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 22px;
+            line-height: 2;
+            text-align: right;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .translation {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .reference {
+            font-size: 11px;
+            color: #d4af37;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #d4af37;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: rgba(10, 77, 46, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: #d4af37;
+        }
+
+        .nav-item.active {
+            color: #d4af37;
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 25px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon {
+            font-size: 18px;
+            color: #d4af37;
+        }
+
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .arabic-text {
+                font-size: 20px;
+            }
+
+            .category-tab {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <a href="index.html" class="back-btn">→</a>
+            <h1>الأحاديث النبوية</h1>
+            <p>أحاديث نبوية شريفة من مصادر موثوقة</p>
+        </div>
+
+        <div class="content">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="ابحث عن حديث..." oninput="filterHadith()">
+            </div>
+
+            <div class="categories" id="categories"></div>
+            <div id="hadithList"></div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="window.location.href='index.html'">
+                <div class="icon">🏠</div>
+                <span>الرئيسية</span>
+            </div>
+            <div class="nav-item" onclick="scrollToTop()">
+                <div class="icon">⬆️</div>
+                <span>أعلى</span>
+            </div>
+            <div class="nav-item active" onclick="shareApp()">
+                <div class="icon">📤</div>
+                <span>مشاركة</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Use DOMContentLoaded to ensure DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            window.currentCategory = 'bukhari';
+            renderCategories();
+            renderHadith();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const categories = [
+                { key: 'all', name: '📚 جميع الأحاديث' },
+                { key: 'ramadan', name: '🌙 أحاديث رمضان' },
+                { key: 'virtues', name: '🌟 فضائل الصيام' },
+                { key: 'sighting', name: '🌙 رؤية الهلال' },
+                { key: 'rules', name: '📜 أحكام الصيام' },
+                { key: 'suhur', name: '🌅 السحور' },
+                { key: 'iftar', name: '🍽️ الإفطار' },
+                { key: 'prayer', name: '🕌 صلاة رمضان' },
+                { key: 'laylatul', name: '✨ ليلة القدر' },
+                { key: 'travel', name: '✈️ الصيام في السفر' },
+                { key: 'voluntary', name: '🤲 صيام التطوع' },
+                { key: 'warnings', name: '⚠️ تحذيرات' },
+                { key: 'obligations', name: '📋 واجبات' },
+                { key: 'zakat', name: '💰 زكاة الفطر' },
+                { key: 'pillars', name: '📌 أركان الإسلام' }
+            ];
+
+            categories.forEach(cat => {
+                const tab = document.createElement('div');
+                tab.className = 'category-tab' + (window.currentCategory === cat.key ? ' active' : '');
+                tab.textContent = cat.name;
+                tab.onclick = function() {
+                    window.currentCategory = cat.key;
+                    renderCategories();
+                    renderHadith();
+                };
+                container.appendChild(tab);
+            });
+        }
+
+        function renderHadith() {
+            const container = document.getElementById('hadithList');
+            if (!container) return;
+
+            const categoryData = getCategoryData(window.currentCategory);
+
+            if (!categoryData || categoryData.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="text-align:center;padding:40px 20px;color:rgba(255,255,255,0.7)"><div style="font-size:60px;margin-bottom:15px">📚</div><p style="margin-bottom:20px">اختر الحديث عبر الزر</p><button onclick="window.currentCategory=\'all\';renderCategories();renderHadith();" style="background:linear-gradient(135deg,#d4af37,#f4cf67);color:#0a4d2e;border:none;padding:12px 30px;border-radius:25px;font-size:16px;font-weight:600;cursor:pointer;transition:transform 0.2s;box-shadow:0 4px 15px rgba(0,0,0,0.3)">عرض جميع الأحاديث</button></div>';
+                return;
+            }
+
+            container.innerHTML = '';
+
+            categoryData.forEach(function(hadith) {
+                const card = document.createElement('div');
+                card.className = 'hadith-card';
+                card.dataset.category = hadith.category;
+
+                const header = document.createElement('div');
+                header.className = 'card-header';
+
+                const title = document.createElement('div');
+                title.className = 'card-title';
+                title.textContent = hadith.title;
+
+                const source = document.createElement('div');
+                source.className = 'card-source';
+                source.textContent = hadith.source;
+
+                header.appendChild(title);
+                header.appendChild(source);
+                card.appendChild(header);
+
+                if (hadith.narrator) {
+                    const narrator = document.createElement('div');
+                    narrator.className = 'narrator';
+                    narrator.textContent = hadith.narrator;
+                    card.appendChild(narrator);
+                }
+
+                const arabic = document.createElement('div');
+                arabic.className = 'arabic-text';
+                arabic.textContent = hadith.arabic;
+                card.appendChild(arabic);
+
+                if (hadith.translation) {
+                    const translation = document.createElement('div');
+                    translation.className = 'translation';
+                    translation.textContent = hadith.translation;
+                    card.appendChild(translation);
+                }
+
+                const reference = document.createElement('div');
+                reference.className = 'reference';
+                reference.textContent = '📌 ' + hadith.reference;
+                card.appendChild(reference);
+
+                const actions = document.createElement('div');
+                actions.className = 'card-actions';
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'action-btn';
+                copyBtn.innerHTML = '📋 نسخ';
+                copyBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    copyHadith(hadith);
+                };
+
+                const shareBtn = document.createElement('button');
+                shareBtn.className = 'action-btn';
+                shareBtn.innerHTML = '📤 مشاركة';
+                shareBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    shareHadith(hadith);
+                };
+
+                actions.appendChild(copyBtn);
+                actions.appendChild(shareBtn);
+                card.appendChild(actions);
+
+                container.appendChild(card);
+            });
+        }
+
+        function getCategoryData(category) {
+            const allHadith = [
+                // Ramadan and Fasting Hadiths
+                { id: 'ramadan_1', title: 'رؤية الهلال', category: 'ramadan,sighting', source: 'البخاري ومسلم', narrator: 'عن ابن عمر رضي الله عنهما', arabic: 'عن ابن عمر رضي الله عنهما عن النبي صلى الله عليه وسلم قال: «لا تصوموا حتى تروا الهلال ولا تفطروا حتى تروه فإن أغمي عليكم فاقدروا له»', translation: 'Do not fast until you see the crescent, and do not break the fast until you see it. If it is obscured, then estimate it', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_2', title: 'لا تتقدموا رمضان', category: 'ramadan,sighting', source: 'البخاري ومسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة قال: قال رسول الله صلى الله عليه وسلم «لا يتقدمن أحدكم رمضان بصوم يوم أو يومين، إلا أن يكون رجل كان يصوم صومه، فليصم ذلك اليوم»', translation: 'None of you should fast a day or two before Ramadan, unless a man is used to fasting a pattern, then let him fast that day', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_3', title: 'صيام يوم الشك', category: 'ramadan,sighting', source: 'أصحاب السنن', narrator: 'عن عمار بن ياسر رضي الله عنه', arabic: 'عن عمَّار بن ياسر قال: "من صام يوم الذي يُشك فيه، فقد عصى أبا القاسم محمدًا صلى الله عليه وسلم"', translation: 'Whoever fasts the day about which there is doubt has disobeyed Abu Al-Qasim Muhammad peace be upon him', reference: 'رواه أصحاب السنن أبو داود والترمذي والنسائي وابن ماجه وصححه الألباني' },
+                { id: 'ramadan_4', title: 'فتح أبواب الجنة', category: 'ramadan,virtues', source: 'مسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «إذا جاء رمضان فتحت أبواب الجنة وغلقت أبواب النار وصفدت الشياطين»', translation: 'When Ramadan comes, the gates of Paradise are opened, the gates of Hell are closed, and the devils are chained', reference: 'رواه مسلم' },
+                { id: 'ramadan_5', title: 'أول ليلة من رمضان', category: 'ramadan,virtues', source: 'الترمذي', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «إذا كان أول ليلة من شهر رمضان صفدت الشياطين، ومردة الجن، وغلقت أبواب النار، فلم يفتح منها باب، وفتحت أبواب الجنة، فلم يغلق منها باب، وينادي مناد: يا باغي الخير أقبل، ويا باغي الشر أقصر، ولله عتقاء من النار، وذلك كل ليلة»', translation: 'When it is the first night of Ramadan, the devils and rebellious jinn are chained, the gates of Hell are closed and not opened, the gates of Paradise are opened and not closed, and a caller calls: O seeker of good, proceed! O seeker of evil, desist! And Allah has emancipated some from the Fire, and that is every night', reference: 'رواه الترمذي وصححه الألباني' },
+                { id: 'ramadan_6', title: 'شهر مبارك', category: 'ramadan,virtues', source: 'النسائي', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «أتاكم رمضان شهر مبارك فرض الله عز وجل عليكم صيامه تفتح فيه أبواب السماء وتغلق فيه أبواب الجحيم وتغل فيه مردة الشياطين لله فيه ليلة خير من ألف شهر من حرم خيرها فقد حرم»', translation: 'There has come to you Ramadan, a blessed month, Allah has made fasting obligatory upon you, during it the gates of heaven are opened, and the gates of Hellfire are closed, and the rebellious devils are chained, in it is a night better than a thousand months, whoever is deprived of its goodness is indeed deprived', reference: 'رواه النسائي وصححه الألباني' },
+                { id: 'ramadan_7', title: 'تكفير الذنوب', category: 'ramadan,virtues', source: 'البخاري ومسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وسلم كان يقول: «الصلوات الخمس والجمعة إلى الجمعة ورمضان إلى رمضان مكفرات ما بينهن إذا اجتنب الكبائر»', translation: 'The five daily prayers, and from one Friday to the next, and from Ramadan to Ramadan, are expiation for sins as long as one avoids major sins', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_8', title: 'من صام رمضان إيماناً', category: 'ramadan,virtues', source: 'البخاري ومسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «من صام رمضان إيمانًا واحتسابًا غفر له ما تقدم من ذنبه، ومن قام ليلة القدر إيمانًا واحتسابًا غفر له ما تقدم من ذنبه»', translation: 'Whoever fasts Ramadan out of faith and seeking reward, his previous sins will be forgiven. And whoever prays on the Night of Decree out of faith and seeking reward, his previous sins will be forgiven', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_9', title: 'من قام رمضان', category: 'ramadan,prayer', source: 'البخاري ومسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «من قام رمضان إيمانًا واحتسابًا غفر له ما تقدم من ذنبه»', translation: 'Whoever prays during the nights of Ramadan out of faith and seeking reward, his previous sins will be forgiven', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_10', title: 'صلاة التراويح', category: 'ramadan,prayer', source: 'البخاري ومسلم', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها أن رسول الله صلى الله عليه وسلم: "صلى في المسجد ذات ليلة في رمضان فصلى بصلاته ناس ثم صلى من القابلة فكثر الناس ثم اجتمعوا من الليلة الثالثة أو الرابعة فلم يخرج إليهم رسول الله فلما أصبح قال: «قد رأيت الذي صنعتم فلم يمنعني من الخروج إليكم إلا أني خشيت أن تفرض عليكم»"', translation: 'The Prophet peace be upon him prayed in the mosque one night in Ramadan and people prayed with him. Then he prayed the next night and more people came. Then they gathered on the third or fourth night but he did not come out. When morning came, he said: I saw what you were doing, and nothing prevented me from coming out except I feared it would be made obligatory for you', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_11', title: 'صيام المحرم', category: 'ramadan,voluntary', source: 'النسائي', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «أفضل الصيام بعد شهر رمضان شهر الله المحرم، وأفضل الصلاة بعد الفريضة صلاة الليل»', translation: 'The best fasting after Ramadan is the month of Allah Muharram, and the best prayer after the obligatory prayer is the night prayer', reference: 'رواه النسائي وصححه الألباني' },
+                { id: 'ramadan_12', title: 'بني الإسلام على خمس', category: 'ramadan,pillars', source: 'البخاري ومسلم', narrator: 'عن ابن عمر رضي الله عنهما', arabic: 'عن ابن عمر رضي الله عنهما قال: قال رسول الله صلى الله عليه وسلم: «بني الإسلام على خمس: شهادة أن لا إله إلا الله وأن محمدًا رسول الله، وإقام الصلاة، وإيتاء الزكاة، وحج البيت، وصوم رمضان»', translation: 'Islam is built on five: testimony that there is none worthy of worship but Allah and Muhammad is His Messenger, establishing prayer, giving Zakah, pilgrimage to the House, and fasting Ramadan', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_13', title: 'رغم أنف رجل', category: 'ramadan,virtues', source: 'الترمذي', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «رغم أنف رجل ذكرت عنده فلم يصل علي، ورغم أنف رجل دخل عليه رمضان ثم انسلخ قبل أن يُغفر له، ورغم أنف رجل أدرك عنده أبواه الكبر فلم يدخلاه الجنة»', translation: 'May he be humiliated, the man in whose presence I am mentioned and he does not send blessings upon me. May he be humiliated, the man who enters Ramadan and then leaves it before he is forgiven. May he be humiliated, the man whose parents reach old age and he does not cause them to enter Paradise', reference: 'رواه الترمذي وصححه الألباني' },
+                { id: 'ramadan_14', title: 'باب الريان', category: 'ramadan,virtues', source: 'البخاري ومسلم', narrator: 'عن سهل بن سعد الساعدي رضي الله عنهما', arabic: 'عن سهل بن سعد الساعدي رضي الله عنهما قال: قال رسول الله صلى الله عليه وسلم: «إن في الجنة بابًا يقال له الريان، يدخل منه الصائمون يوم القيامة، لا يدخل معهم أحد غيرهم، يقال: أين الصائمون؟ فيدخلون منه، فإذا دخل آخرهم، أغلق فلم يدخل منه أحد»', translation: 'There is a gate in Paradise called Al-Rayyan, through which the fasting people will enter on the Day of Resurrection, and no one else will enter through it. It will be said: Where are the fasting people? They will enter through it, and when the last of them enters, it will be closed and no one else will enter through it', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_15', title: 'صيام يوم في سبيل الله', category: 'ramadan,voluntary', source: 'البخاري ومسلم', narrator: 'عن أبي سعيد الخدري رضي الله عنه', arabic: 'عن أبي سعيد الخدري رضي الله عنه قال: سمعت النبي صلى الله عليه وسلم يقول: «من صام يومًا في سبيل الله، بعد الله وجهه عن النار سبعين خريفًا»', translation: 'Whoever fasts one day for the sake of Allah, Allah will keep his face seventy years distance from Hellfire', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_16', title: 'عمرة في رمضان', category: 'ramadan,virtues', source: 'البخاري', narrator: 'عن ابن عباس رضي الله عنهما', arabic: 'عن ابن عباس رضي الله عنهما قال: قال رسول الله صلى الله عليه وسلم: «عمرة في رمضان تعدل حجة»', translation: 'Umrah in Ramadan is equivalent to Hajj', reference: 'رواه البخاري' },
+                { id: 'ramadan_17', title: 'أجود الناس', category: 'ramadan,virtues', source: 'البخاري ومسلم', narrator: 'عن ابن عباس رضي الله عنهما', arabic: 'عن ابن عباس رضي الله عنهما قال: "كان رسول الله صلى الله عليه وسلم أجود الناس، وكان أجود ما يكون في رمضان حين يلقاه جبريل، وكان يلقاه في كل ليلة من رمضان فيدارسه القرآن، فلرسول الله صلى الله عليه وسلم أجود بالخير من الريح المرسلة"', translation: 'The Prophet peace be upon him was the most generous of people, and he was most generous in Ramadan when Gabriel met him. Gabriel would meet him every night in Ramadan and review the Quran with him. The Messenger of Allah was more generous in goodness than the blowing wind', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_18', title: 'الصيام لي وأنا أجزي به', category: 'ramadan,virtues', source: 'البخاري ومسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: « قال الله عز وجل: كل عمل ابن آدم له إلا الصيام، فإنه لي وأنا أجزي به، والصيام جنة، فإذا كان يوم صوم أحدكم، فلا يرفث يومئذ ولا يصخب، فإن سابه أحد أو قاتله، فليقل: إني امرؤ صائم، والذي نفس محمد بيده، لخلوف فم الصائم أطيب عند الله، يوم القيامة، من ريح المسك»', translation: 'Allah says: Every deed of the son of Adam is for him except fasting, it is for Me and I shall reward for it. Fasting is a shield. When one of you is fasting, let him not behave obscenely or act ignorantly. If someone insults him or fights him, let him say: I am fasting. By the One in Whose Hand is the soul of Muhammad, the breath of the fasting person is more pleasant to Allah on the Day of Resurrection than the scent of musk', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_19', title: 'الصيام جنة', category: 'ramadan,virtues', source: 'البخاري ومسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «الصيام جُنة فلا يرفث ولا يجهل، وإن امرؤ قاتله أو شاتمه فليقل: إني صائم مرتين»', translation: 'Fasting is a shield, so let the one who fasts not behave obscenely or ignorantly. If someone fights him or insults him, let him say: I am fasting, twice', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_20', title: 'رب صائم ليس له من صيامه', category: 'ramadan,warnings', source: 'ابن ماجه', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: « رُب صائم ليس له من صيامه إلا الجوع، ورُب قائم ليس له من قيامه إلا السهر»', translation: 'There may be people who fast but get nothing from their fasting except hunger, and there may be people who pray at night but get nothing from their prayer except sleeplessness', reference: 'رواه ابن ماجه وصححه الألباني' },
+                { id: 'ramadan_21', title: 'من لم يدع قول الزور', category: 'ramadan,warnings', source: 'البخاري', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «من لم يدع قول الزور والعمل به، فليس لله حاجة في أن يدع طعامه وشرابه»', translation: 'Whoever does not give up false speech and acting upon it, Allah has no need that he should give up his food and drink', reference: 'رواه البخاري' },
+                { id: 'ramadan_22', title: 'نيّة الصيام', category: 'ramadan,rules', source: 'النسائي', narrator: 'عن حفصة رضي الله عنها', arabic: 'عن حفصة رضي الله عنها عن النبي صلى الله عليه وسلم قال: «من لم يُبيت الصيام قبل الفجر، فلا صيام له»', translation: 'Whoever does not resolve to fast before dawn, there is no fast for him', reference: 'رواه النسائي وصححه الألباني' },
+                { id: 'ramadan_23', title: 'الصيام المتقطع', category: 'ramadan,rules', source: 'مسلم', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها قالت: "دخل عليَّ النبي صلى الله عليه وسلم ذات يوم فقال: «هل عندكم شيء؟» فقلنا: لا، قال: «فإني إذن صائم»، ثم أتانا يومًا آخر فقلنا: "يا رسول الله، أُهدي لنا حَيس"، فقال: « أرِينيه، فلقد أصبحت صائمًا»، فأكل".', translation: 'The Prophet peace be upon him entered upon me one day and said: Do you have anything? We said: No. He said: Then I am fasting. Then he came to us another day and we said: O Messenger of Allah, Hais has been given to us. He said: Show it to me, for I had begun the day fasting. Then he ate', reference: 'رواه مسلم' },
+                { id: 'ramadan_24', title: 'الجنابة والصيام', category: 'ramadan,rules', source: 'البخاري ومسلم', narrator: 'عن عائشة وأم سلمة رضي الله عنهما', arabic: 'عن عائشة وأم سلمة رضي الله عنهما "أن رسول الله صلى الله عليه وسلم كان يدركه الفجر وهو جنب من أهله ثم يغتسل ويصوم".', translation: 'The Messenger of Allah peace be upon him would reach dawn in a state of sexual impurity from his wife, then he would bathe and fast', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_25', title: 'السحور بركة', category: 'ramadan,suhur', source: 'البخاري ومسلم', narrator: 'عن أنس بن مالك رضي الله عنه', arabic: 'عن أنس بن مالك رضي الله عنه قال: قال النبي صلى الله عليه وسلم: «تسحَّروا فإن في السحور بركة»', translation: 'Eat Suhur (pre-dawn meal), for there is blessing in Suhur', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_26', title: 'فصل الصيام', category: 'ramadan,suhur', source: 'مسلم', narrator: 'عن عمرو بن العاص رضي الله عنه', arabic: 'عن عمرو بن العاص رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «فصلُ ما بين صيامنا وصيام أهل الكتاب أكلةُ السَّحَر»', translation: 'The distinction between our fasting and the fasting of the People of the Book is the eating of Suhur', reference: 'رواه مسلم' },
+                { id: 'ramadan_27', title: 'وقت السحور', category: 'ramadan,suhur', source: 'متفق عليه', narrator: 'عن زيد بن ثابت رضي الله عنه', arabic: 'عن زيد بن ثابت رضي الله عنه قال: "تسحَّرنا مع النبي صلى الله عليه وسلم ثم قام إلى الصلاة، قلت: "كم كان بين الأذان والسحور؟" قال: «قدر خمسين آية»"', translation: 'We ate Suhur with the Prophet peace be upon him then he stood for prayer. I said: How much time was there between the Adhan and Suhur? He said: About fifty verses', reference: 'متفق عليه' },
+                { id: 'ramadan_28', title: 'أذان بلال', category: 'ramadan,suhur', source: 'البخاري ومسلم', narrator: 'عن ابن عمر رضي الله عنهما', arabic: 'عن ابن عمر رضي الله عنهما قال: "كان لرسول الله صلى الله عليه وسلم مؤذنان بلال وابن أم مكتوم الأعمى، فقال رسول الله صلى الله عليه وسلم: «إن بلالًا يؤذِّن بليل، فكلوا واشربوا حتى يؤذِّن ابن أم مكتوم»، قال: ولم يكن بينهما إلا أن ينزل هذا ويرقى هذا".', translation: 'The Messenger of Allah peace be upon him had two muazzins, Bilal and Ibn Umm Maktum the blind one. The Messenger of Allah said: Bilal calls the Adhan during the night, so eat and drink until Ibn Umm Maktum calls the Adhan. There was no time between them except as long as it took for one to descend and the other to ascend', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_29', title: 'تعجيل الفطر', category: 'ramadan,iftar', source: 'البخاري ومسلم', narrator: 'عن سهل بن سعد رضي الله عنه', arabic: 'عن سهل بن سعد رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «لا يزال الناس بخير ما عجَّلوا الفطر»', translation: 'People will remain fine so long as they hasten to break the fast', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_30', title: 'وقت الفطر', category: 'ramadan,iftar', source: 'البخاري ومسلم', narrator: 'عن عمر بن الخطاب رضي الله عنه', arabic: 'عن عمر بن الخطاب رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «إذا أقبل الليل من ها هنا، وأدبر النهار من ها هنا، وغربت الشمس، فقد أفطر الصائم».', translation: 'When night comes from here, and day departs from here, and the sun sets, the fasting person breaks his fast', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_31', title: 'الفطر قبل الصلاة', category: 'ramadan,iftar', source: 'الترمذي', narrator: 'عن أنس بن مالك رضي الله عنه', arabic: 'عن أنس بن مالك رضي الله عنه قال: "كان النبي صلى الله عليه وسلم يفطر قبل أن يصلي على رُطَبات، فإن لم تكن رُطَبات فتُميرات، فإن لم تكن تميرات حسا حسوات من ماء".', translation: 'The Prophet peace be upon him used to break his fast before praying with fresh dates, if there were no fresh dates then with dried dates, if there were no dried dates then he would drink a few sips of water', reference: 'رواه الترمذي وحسنه الألباني' },
+                { id: 'ramadan_32', title: 'القبلة للصائم', category: 'ramadan,rules', source: 'البخاري ومسلم', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها قالت: "كان رسول الله صلى الله عليه وسلم يُقبِّل وهو صائم، ويُباشر وهو صائم، ولكنه أملكُكُم لأَرَبه".', translation: 'The Messenger of Allah peace be upon him used to kiss while fasting, and touch his wife while fasting, but he was the most in control of his desire among you', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_33', title: 'من نسي فأكل', category: 'ramadan,rules', source: 'البخاري ومسلم', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «من نسي وهو صائم فأكل أو شرب فليتمَّ صومه؛ فإنما أطعمه الله وسقاه»', translation: 'Whoever forgets while fasting and eats or drinks, let him complete his fast, for it is Allah Who fed him and gave him to drink', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_34', title: 'القيء', category: 'ramadan,rules', source: 'الترمذي', narrator: 'عن أبي هريرة رضي الله عنه', arabic: 'عن أبي هريرة رضي الله عنه أن النبي صلى الله عليه وسلم قال: «من ذَرَعه القيء فليس عليه قضاء، ومن استقاء عمدًا فليقضِ»', translation: 'Whoever is overcome by vomiting, there is no expiation upon him, and whoever vomits deliberately, let him make up the fast', reference: 'رواه الترمذي وصححه الألباني' },
+                { id: 'ramadan_35', title: 'الاستنشاق للصائم', category: 'ramadan,rules', source: 'أحمد وأصحاب السنن', narrator: 'عن لقيط بن صبرة رضي الله عنه', arabic: 'عن لقيط بن صبرة رضي الله عنه قال: قلت: "يا رسول الله، أخبرني عن الوضوء، قال: « أسبغ الوضوء، وخلِّل بين الأصابع، وبالغ في الاستنشاق إلا أن تكون صائمًا»"', translation: 'I said: O Messenger of Allah, tell me about ablution. He said: Perform ablution thoroughly, let water run between your fingers, and exaggerate in sniffing water up the nose, unless you are fasting', reference: 'رواه أحمد وأصحاب السنن وصححه الألباني' },
+                { id: 'ramadan_36', title: 'الصيام في السفر', category: 'ramadan,travel', source: 'البخاري ومسلم', narrator: 'عن جابر بن عبد الله رضي الله عنهما', arabic: 'عن جابر بن عبد الله رضي الله عنهما قال: "كان رسول الله صلى الله عليه وسلم في سفر فرأى رجلًا قد اجتمع الناس عليه، وقد ظلل عليه، فقال: « ما له؟» قالوا: رجل صائم، فقال رسول الله صلى الله عليه وسلم: «ليس من البر أن تصوموا في السفر»"', translation: 'The Messenger of Allah peace be upon him was on a journey and saw a man around whom people had gathered and who was shaded. He said: What is wrong with him? They said: He is fasting. The Messenger of Allah said: It is not righteousness to fast while traveling', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_37', title: 'رخصة الصيام في السفر', category: 'ramadan,travel', source: 'البخاري ومسلم', narrator: 'عن حمزة بن عمرو الأسلمي رضي الله عنه', arabic: 'عن حمزة بن عمرو الأسلمي رضي الله عنه أنه قال: "يا رسول الله، أجد بي قوةً على الصيام في السفر، فهل عليَّ جناح؟" فقال رسول الله صلى الله عليه وسلم: «هي رخصة من الله، فمن أخذ بها فحسن، ومن أحبَّ أن يصوم فلا جناح عليه»', translation: 'I said: O Messenger of Allah, I find myself able to fast while traveling, is there any sin upon me? The Messenger of Allah said: It is a concession from Allah, so whoever takes it is good, and whoever likes to fast, there is no sin upon him', reference: 'رواه البخاري في الصوم ومسلم' },
+                { id: 'ramadan_38', title: 'الصائم والمفطر في السفر', category: 'ramadan,travel', source: 'مسلم', narrator: 'عن أبي سعيد الخدري وجابر بن عبد الله رضي الله عنهما', arabic: 'عن أبي سعيد الخدري وجابر بن عبد الله رضي الله عنهما قالا: "سافرنا مع رسول الله صلى الله عليه وسلم فيصوم الصائم، ويفطر المفطر، فلا يعيب بعضهم على بعض".', translation: 'We traveled with the Messenger of Allah peace be upon him, and some would fast while others would not, and none would criticize the others', reference: 'رواه مسلم' },
+                { id: 'ramadan_39', title: 'أجر المفطرين في السفر', category: 'ramadan,travel', source: 'البخاري ومسلم', narrator: 'عن أنس رضي الله عنه', arabic: 'عن أنس رضي الله عنه قال: "كنا مع النبي صلى الله عليه وسلم في السفر، فمنا الصائم ومنا المفطر، قال: فنزلنا منزلًا في يوم حارٍّ، أكثرنا ظلًا صاحب الكساء، ومنا من يتقي الشمس بيده، قال: فسقط الصُوَّام، وقام المفطرون فضربوا الأبنيةَ وسقوا الرِّكاب، فقال رسول الله صلى الله عليه وسلم: «ذهب المفطرون اليوم بالأجر»"', translation: 'We were with the Prophet peace be upon him traveling, some of us fasting and some not. We stopped at a place on a hot day. Most of us had little shade except the one who had a garment, and some of us would shield themselves from the sun with their hands. The fasting people fell exhausted, and those who were not fasting got up and set up the shelters and watered the riding animals. The Messenger of Allah said: Those who were not fasting have taken the reward today', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_40', title: 'قضاء الصيام', category: 'ramadan,obligations', source: 'البخاري ومسلم', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها أن رسول الله صلى الله عليه وسلم قال: «من مات وعليه صيام صام عنه وليه»', translation: 'Whoever dies owing fasts, his guardian should fast on his behalf', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_41', title: 'إفطار الصائم', category: 'ramadan,virtues', source: 'أحمد وأصحاب السنن', narrator: 'عن زيد بن خالد الجهني رضي الله عنه', arabic: 'عن زيد بن خالد الجهني رضي الله عنه قال: قال رسول الله صلى الله عليه وسلم: «من فطَّر صائمًا كان له مثلُ أجرِه غيرَ أنه لا ينقص من أجر الصائم شيئًا»', translation: 'Whoever provides food for a fasting person to break his fast will have a reward like his, without it detracting from the fasting person\'s reward', reference: 'رواه أحمد وأصحاب السنن وصححه الألباني' },
+                { id: 'ramadan_42', title: 'شفاعة الصيام', category: 'ramadan,virtues', source: 'أحمد', narrator: 'عن عبد الله بن عمرو رضي الله عنه', arabic: 'عن عبد الله بن عمرو أن رسول الله صلى الله عليه وسلم قال: «الصيام والقرآن يشفعان للعبد يوم القيامة، يقول الصيام: أي رب، منعته الطعام والشهوات بالنهار فشفِّعني فيه، ويقول القرآن: منعته النوم بالليل فشفعني فيه، قال: فيُشفَّعان»', translation: 'Fasting and the Quran will intercede for a person on the Day of Resurrection. Fasting will say: O Lord, I prevented him from food and desires during the day, so let me intercede for him. The Quran will say: I prevented him from sleep at night, so let me intercede for him. And they will be allowed to intercede', reference: 'رواه أحمد وصححه الألباني' },
+                { id: 'ramadan_43', title: 'الاعتكاف في العشر', category: 'ramadan,laylatul', source: 'البخاري ومسلم', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها قالت: "كان النبي صلى الله عليه وسلم إذا دخل العشر شدَّ مئزره وأحيا ليله، وأيقظ أهله".', translation: 'When the Prophet peace be upon him entered the last ten days of Ramadan, he would tighten his waist-wrapper, spend the night in worship, and wake his family', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_44', title: 'اجتهاد في العشر', category: 'ramadan,laylatul', source: 'مسلم', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها قالت: "كان رسول الله صلى الله عليه وسلم يجتهد في العشر الأواخر ما لا يجتهد في غيره".', translation: 'The Messenger of Allah peace be upon him would strive hard in worship during the last ten days of Ramadan as he would not do at other times', reference: 'رواه مسلم' },
+                { id: 'ramadan_45', title: 'الاعتكاف في رمضان', category: 'ramadan,laylatul', source: 'البخاري', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها قالت: "كان النبي صلى الله عليه وسلم يعتكف في العشر الأواخر من رمضان".', translation: 'The Prophet peace be upon him used to observe I\'tikaf (seclusion in the mosque) during the last ten days of Ramadan', reference: 'رواه البخاري' },
+                { id: 'ramadan_46', title: 'ليلة القدر', category: 'ramadan,laylatul', source: 'البخاري ومسلم', narrator: 'عن ابن عباس رضي الله عنهما', arabic: 'عن ابن عباس رضي الله عنهما أن النبي صلى الله عليه وسلم قال في ليلة القدر: «التمسوها في العشر الأواخر من رمضان»', translation: 'Seek it in the last ten days of Ramadan', reference: 'رواه البخاري، ورواه مسلم عن ابن عمر رضي الله عنهما' },
+                { id: 'ramadan_47', title: 'دعاء ليلة القدر', category: 'ramadan,laylatul', source: 'أحمد وأصحاب السنن', narrator: 'عن عائشة رضي الله عنها', arabic: 'عن عائشة رضي الله عنها قالت: "قلت: يا رسول الله، أرأيتَ إن علمتُ أي ليلةٍ ليلةُ القدر ما أقول فيها؟" قال: «قولي: اللهم إنك عفو تحب العفو فاعف عني»', translation: 'I said: O Messenger of Allah, if I know which night is Laylatul Qadr, what should I say? He said: Say: O Allah, You are Forgiving and love forgiveness, so forgive me', reference: 'رواه أحمد وأصحاب السنن وصححه الألباني' },
+                { id: 'ramadan_48', title: 'زكاة الفطر', category: 'ramadan,zakat', source: 'البخاري ومسلم', narrator: 'عن ابن عمر رضي الله عنهما', arabic: 'عن ابن عمر رضي الله عنهما قال: "فرض رسول الله صلى الله عليه وسلم زكاة الفطر من رمضان على الناس، صاعًا من تمر، أو صاعًا من شعير، على كل حر أو عبد، ذكر أو أنثى، من المسلمين"', translation: 'The Messenger of Allah peace be upon him made Zakat Al-Fitr of Ramadan obligatory as a Sa\' of dates or a Sa\' of barley, on every free or slave person, male or female, among the Muslims', reference: 'رواه البخاري ومسلم' },
+                { id: 'ramadan_49', title: 'ست من شوال', category: 'ramadan,voluntary', source: 'مسلم', narrator: 'عن أبي أيوب الأنصاري رضي الله عنه', arabic: 'عن أبي أيوب الأنصاري رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «من صام رمضان ثم أتبعه ستا من شوال كان كصيام الدهر»', translation: 'Whoever fasts Ramadan then follows it with six days of Shawwal, it is as if he fasted for a lifetime', reference: 'رواه مسلم' },
+                { id: 'ramadan_50', title: 'صيام ثلاثة أيام', category: 'ramadan,voluntary', source: 'مسلم', narrator: 'عن أبي قتادة رضي الله عنه', arabic: 'عن أبي قتادة رضي الله عنه أن رسول الله صلى الله عليه وسلم قال: «ثلاث من كل شهر، ورمضان إلى رمضان، هذا صيام الدهر كله»', translation: 'Three days every month, and Ramadan to Ramadan, this is fasting for a lifetime', reference: 'رواه مسلم' }
+            ];
+
+            if (category === 'all') {
+                return allHadith;
+            }
+
+            return allHadith.filter(function(h) {
+                const categories = h.category.split(',');
+                return categories.indexOf(category) !== -1;
+            });
+        }
+
+        function copyHadith(hadith) {
+            const text = hadith.arabic + '\n\n' + hadith.translation + '\n\n' + hadith.reference;
+            navigator.clipboard.writeText(text).then(function() {
+                alert('تم نسخ الحديث بنجاح!');
+            }).catch(function() {
+                alert('عذراً، لم يتم نسخ الحديث');
+            });
+        }
+
+        function shareHadith(hadith) {
+            const text = hadith.arabic + '\n\n' + hadith.translation + '\n\n' + hadith.reference;
+            if (navigator.share) {
+                navigator.share({
+                    title: hadith.title,
+                    text: text
+                }).catch(console.error);
+            } else {
+                copyHadith(hadith);
+            }
+        }
+
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'التطبيق الإسلامي',
+                    text: 'تطبيق إسلامي شامل',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                alert('مشاركة التطبيق');
+            }
+        }
+
+        function filterHadith() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.hadith-card');
+
+            cards.forEach(function(card) {
+                const arabicText = card.querySelector('.arabic-text').textContent.toLowerCase();
+                const titleText = card.querySelector('.card-title').textContent.toLowerCase();
+
+                if (arabicText.includes(searchTerm) || titleText.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = searchTerm === '' ? 'block' : 'none';
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

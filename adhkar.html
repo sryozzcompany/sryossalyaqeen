@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الأذكار والأدعية - التطبيق الإسلامي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a4d2e 0%, #1a7a4c 50%, #0d5c38 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d4af37 0%, #f4cf67 50%, #d4af37 100%);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            color: #0a4d2e;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #1a7a4c;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #0a4d2e, #1a7a4c);
+            color: #fff;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-tab {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #d4af37, #f4cf67);
+            color: #0a4d2e;
+            border-color: #d4af37;
+        }
+
+        .category-tab:hover {
+            background: rgba(212, 175, 55, 0.3);
+        }
+
+        .category-tab.active:hover {
+            background: linear-gradient(135deg, #d4af37, #f4cf67);
+        }
+
+        .adhkar-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .adhkar-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            color: #d4af37;
+        }
+
+        .card-counter {
+            background: linear-gradient(135deg, #d4af37, #f4cf67);
+            color: #0a4d2e;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 22px;
+            line-height: 2;
+            text-align: right;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .transliteration {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .translation {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .source {
+            font-size: 11px;
+            color: #d4af37;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .counter-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .counter-display {
+            background: rgba(0, 0, 0, 0.3);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #d4af37;
+            border: 3px solid #d4af37;
+        }
+
+        .counter-btn {
+            background: linear-gradient(135deg, #d4af37, #f4cf67);
+            color: #0a4d2e;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: 700;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .counter-btn:active {
+            transform: scale(0.95);
+        }
+
+        .counter-btn.reset {
+            background: linear-gradient(135deg, #8b0000, #a52a2a);
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .counter-btn.completed {
+            background: linear-gradient(135deg, #228b22, #32cd32);
+            color: #fff;
+        }
+
+        .completed {
+            opacity: 0.7;
+        }
+
+        .completed .counter-display {
+            border-color: #32cd32;
+            color: #32cd32;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: rgba(10, 77, 46, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: #d4af37;
+        }
+
+        .nav-item.active {
+            color: #d4af37;
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 380px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .arabic-text {
+                font-size: 20px;
+            }
+
+            .category-tab {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <a href="index.html" class="back-btn">→</a>
+            <h1>الأذكار والأدعية</h1>
+            <p>أذكار اليوم والليلة وأدعية مأثورة</p>
+        </div>
+
+        <div class="content">
+            <div class="categories" id="categories"></div>
+            <div id="adhkarList"></div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="window.location.href='index.html'">
+                <div class="icon">🏠</div>
+                <span>الرئيسية</span>
+            </div>
+            <div class="nav-item" onclick="scrollToTop()">
+                <div class="icon">⬆️</div>
+                <span>أعلى</span>
+            </div>
+            <div class="nav-item active" onclick="resetAllCounters()">
+                <div class="icon">🔄</div>
+                <span>إعادة</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Use DOMContentLoaded to ensure DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            window.currentCategory = 'morning';
+            window.counters = {};
+
+            try {
+                const stored = localStorage.getItem('adhkarCounters');
+                if (stored) {
+                    window.counters = JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Error loading from localStorage:', e);
+            }
+
+            renderCategories();
+            renderAdhkar();
+        }
+
+        function getCounter(id) {
+            return window.counters[id] || 0;
+        }
+
+        function setCounter(id, value) {
+            window.counters[id] = value;
+            try {
+                localStorage.setItem('adhkarCounters', JSON.stringify(window.counters));
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
+        }
+
+        function incrementCounter(id, maxCount) {
+            const current = getCounter(id);
+            if (current < maxCount) {
+                setCounter(id, current + 1);
+                renderAdhkar();
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+            }
+        }
+
+        function resetCounter(id) {
+            setCounter(id, 0);
+            renderAdhkar();
+        }
+
+        function resetAllCounters() {
+            window.counters = {};
+            try {
+                localStorage.setItem('adhkarCounters', JSON.stringify(window.counters));
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
+            renderAdhkar();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const categories = [
+                { key: 'morning', name: '🌅 أذكار الصباح' },
+                { key: 'evening', name: '🌙 أذكار المساء' },
+                { key: 'sleep', name: '😴 أذكار النوم' },
+                { key: 'prayer', name: '🕌 أذكار الصلاة' },
+                { key: 'general', name: '🤲 أدعية عامة' }
+            ];
+
+            categories.forEach(cat => {
+                const tab = document.createElement('div');
+                tab.className = 'category-tab' + (window.currentCategory === cat.key ? ' active' : '');
+                tab.textContent = cat.name;
+                tab.onclick = function() {
+                    window.currentCategory = cat.key;
+                    renderCategories();
+                    renderAdhkar();
+                };
+                container.appendChild(tab);
+            });
+        }
+
+        function renderAdhkar() {
+            const container = document.getElementById('adhkarList');
+            if (!container) return;
+
+            const categoryData = getCategoryData(window.currentCategory);
+
+            if (!categoryData || categoryData.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="text-align:center;padding:40px 20px;color:rgba(255,255,255,0.7)"><div style="font-size:60px;margin-bottom:15px">📚</div><p>لا توجد أذكار متاحة حالياً</p></div>';
+                return;
+            }
+
+            container.innerHTML = '';
+
+            categoryData.forEach(function(dhikr) {
+                const currentCount = getCounter(dhikr.id);
+                const isCompleted = currentCount >= dhikr.count;
+
+                const card = document.createElement('div');
+                card.className = 'adhkar-card' + (isCompleted ? ' completed' : '');
+
+                const header = document.createElement('div');
+                header.className = 'card-header';
+
+                const title = document.createElement('div');
+                title.className = 'card-title';
+                title.textContent = dhikr.title;
+
+                const counter = document.createElement('div');
+                counter.className = 'card-counter';
+                counter.textContent = currentCount + '/' + dhikr.count;
+
+                header.appendChild(title);
+                header.appendChild(counter);
+                card.appendChild(header);
+
+                const arabic = document.createElement('div');
+                arabic.className = 'arabic-text';
+                arabic.textContent = dhikr.arabic;
+                card.appendChild(arabic);
+
+                if (dhikr.transliteration) {
+                    const trans = document.createElement('div');
+                    trans.className = 'transliteration';
+                    trans.textContent = dhikr.transliteration;
+                    card.appendChild(trans);
+                }
+
+                if (dhikr.translation) {
+                    const translation = document.createElement('div');
+                    translation.className = 'translation';
+                    translation.textContent = dhikr.translation;
+                    card.appendChild(translation);
+                }
+
+                const source = document.createElement('div');
+                source.className = 'source';
+                source.textContent = '📖 ' + dhikr.source;
+                card.appendChild(source);
+
+                const controls = document.createElement('div');
+                controls.className = 'counter-controls';
+
+                const resetBtn = document.createElement('button');
+                resetBtn.className = 'counter-btn reset';
+                resetBtn.textContent = '↺';
+                resetBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    resetCounter(dhikr.id);
+                };
+
+                const display = document.createElement('div');
+                display.className = 'counter-display';
+                display.textContent = currentCount;
+
+                const addBtn = document.createElement('button');
+                addBtn.className = 'counter-btn' + (isCompleted ? ' completed' : '');
+                addBtn.textContent = '+';
+                if (isCompleted) {
+                    addBtn.disabled = true;
+                }
+                addBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    incrementCounter(dhikr.id, dhikr.count);
+                };
+
+                controls.appendChild(resetBtn);
+                controls.appendChild(display);
+                controls.appendChild(addBtn);
+                card.appendChild(controls);
+
+                container.appendChild(card);
+            });
+        }
+
+        function getCategoryData(category) {
+            var data = {
+                morning: [
+                    { id: 'morning_1', title: 'آية الكرسي', arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ', transliteration: 'Allahu la ilaha illa huwal hayyul qayyum...', translation: 'من قالها حين يصبح حُفِظَ حتى يمسي', source: 'سورة البقرة: 255', count: 1 },
+                    { id: 'morning_2', title: 'المعوذات (3 مرات)', arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ * قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * قُلْ أَعُوذُ بِرَبِّ النَّاسِ', transliteration: 'Qul huwal lahul ahad * Qul auzu birabbil falaq * Qul auzu birabbin nas', translation: 'تُقرأ 3 مرات لكل واحدة', source: 'الإخلاص، الفلق، الناس', count: 3 },
+                    { id: 'morning_3', title: 'أصبحنا وأصبح الملك', arabic: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ', transliteration: 'Asbahna wa asbahal mulku lillah...', translation: 'دعاء الصباح الكامل', source: 'صحيح مسلم', count: 1 },
+                    { id: 'morning_4', title: 'اللهم بك أصبحنا', arabic: 'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ', transliteration: 'Allahumma bik asbahna wa bik amsayna...', translation: 'دعاء الصباح', source: 'صحيح مسلم', count: 1 },
+                    { id: 'morning_5', title: 'سيد الاستغفار', arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ', transliteration: 'Allahumma anta rabbi...', translation: 'من قالها موقنًا بها فمات دخل الجنة', source: 'صحيح البخاري', count: 1 },
+                    { id: 'morning_6', title: 'رضيت بالله', arabic: 'رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا', transliteration: 'Raditu billahi rabban...', translation: 'ثلاث مرات', source: 'صحيح مسلم', count: 3 },
+                    { id: 'morning_7', title: 'دعاء العافية', arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي، وَعَنْ يَمِينِي وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي', transliteration: 'Allahumma inni asaluka al-afiyah...', translation: 'دعاء العافية الشامل', source: 'سنن أبي داود وابن ماجه', count: 1 },
+                    { id: 'morning_8', title: 'اللهم عافني', arabic: 'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ', transliteration: 'Allahumma afini fi badani...', translation: 'ثلاث مرات', source: 'سنن أبي داود', count: 3 },
+                    { id: 'morning_9', title: 'حسبي الله', arabic: 'حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ', transliteration: 'Hasbiyallahu la ilaha illa huwa...', translation: 'سبع مرات', source: 'سورة التوبة: 129', count: 7 },
+                    { id: 'morning_10', title: 'بسم الله الذي لا يضر', arabic: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ', transliteration: 'Bismillahilladhi la yadurru...', translation: 'ثلاث مرات', source: 'سنن أبي داود والترمذي', count: 3 },
+                    { id: 'morning_11', title: 'أعوذ بكلمات الله التامات', arabic: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ', transliteration: 'Auzu bikalimatillahit-tammati...', translation: 'ثلاث مرات', source: 'سنن الترمذي', count: 3 },
+                    { id: 'morning_12', title: 'يا حي يا قيوم', arabic: 'يَا حَيُّ يَا قَيُّومُ، بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ', transliteration: 'Ya hayyu ya qayyum...', translation: 'دعاء الاستغاثة', source: 'سنن الترمذي', count: 1 },
+                    { id: 'morning_13', title: 'أصبحنا على فطرة الإسلام', arabic: 'أَصْبَحْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ، حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِينَ', transliteration: 'Asbahna ala fitratil islam...', translation: 'دعاء الصباح', source: 'سنن أحمد', count: 1 },
+                    { id: 'morning_14a', title: 'سبحان الله', arabic: 'سُبْحَانَ اللَّهِ', transliteration: 'Subhanallah', translation: 'مائة مرة', source: 'صحيح مسلم', count: 100 },
+                    { id: 'morning_14b', title: 'الحمد لله', arabic: 'الْحَمْدُ لِلَّهِ', transliteration: 'Alhamdulillah', translation: 'مائة مرة', source: 'صحيح مسلم', count: 100 },
+                    { id: 'morning_14c', title: 'الله أكبر', arabic: 'اللَّهُ أَكْبَرُ', transliteration: 'Allahu akbar', translation: 'مائة مرة', source: 'صحيح مسلم', count: 100 },
+                    { id: 'morning_14d', title: 'لا إله إلا الله', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', transliteration: 'La ilaha illallah wahdahu la sharika lah...', translation: 'مائة مرة', source: 'صحيح الترمذي', count: 100 }
+                ],
+                evening: [
+                    { id: 'evening_1', title: 'آية الكرسي', arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ', transliteration: 'Allahu la ilaha illa huwal hayyul qayyum...', translation: 'من قالها حين يمسي حُفِظَ حتى يصبح', source: 'سورة البقرة: 255', count: 1 },
+                    { id: 'evening_2', title: 'المعوذات (3 مرات)', arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ * قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * قُلْ أَعُوذُ بِرَبِّ النَّاسِ', transliteration: 'Qul huwal lahul ahad * Qul auzu birabbil falaq * Qul auzu birabbin nas', translation: 'تُقرأ 3 مرات لكل واحدة', source: 'الإخلاص، الفلق، الناس', count: 3 },
+                    { id: 'evening_3', title: 'أمسينا وأمسى الملك', arabic: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ', transliteration: 'Amsayna wa amsal mulku lillah...', translation: 'دعاء المساء الكامل', source: 'صحيح مسلم', count: 1 },
+                    { id: 'evening_4', title: 'اللهم بك أمسينا', arabic: 'اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ', transliteration: 'Allahumma bik amsayna wa bik asbahna...', translation: 'دعاء المساء', source: 'صحيح مسلم', count: 1 },
+                    { id: 'evening_5', title: 'سيد الاستغفار', arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ', transliteration: 'Allahumma anta rabbi...', translation: 'من قالها موقنًا بها ثم مات دخل الجنة', source: 'صحيح البخاري', count: 1 },
+                    { id: 'evening_6', title: 'رضيت بالله', arabic: 'رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا', transliteration: 'Raditu billahi rabban...', translation: 'ثلاث مرات', source: 'صحيح مسلم', count: 3 },
+                    { id: 'evening_7', title: 'دعاء العافية', arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي، وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي، وَعَنْ يَمِينِي وَعَنْ شِمَالِي، وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي', transliteration: 'Allahumma inni asaluka al-afiyah...', translation: 'دعاء العافية الشامل', source: 'سنن أبي داود وابن ماجه', count: 1 },
+                    { id: 'evening_8', title: 'اللهم عافني', arabic: 'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ', transliteration: 'Allahumma afini fi badani...', translation: 'ثلاث مرات', source: 'سنن أبي داود', count: 3 },
+                    { id: 'evening_9', title: 'حسبي الله', arabic: 'حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ، وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ', transliteration: 'Hasbiyallahu la ilaha illa huwa...', translation: 'سبع مرات', source: 'سورة التوبة: 129', count: 7 },
+                    { id: 'evening_10', title: 'بسم الله الذي لا يضر', arabic: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ', transliteration: 'Bismillahilladhi la yadurru...', translation: 'ثلاث مرات', source: 'سنن أبي داود والترمذي', count: 3 },
+                    { id: 'evening_11', title: 'أعوذ بكلمات الله التامات', arabic: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ', transliteration: 'Auzu bikalimatillahit-tammati...', translation: 'ثلاث مرات', source: 'سنن الترمذي', count: 3 },
+                    { id: 'evening_12', title: 'يا حي يا قيوم', arabic: 'يَا حَيُّ يَا قَيُّومُ، بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ', transliteration: 'Ya hayyu ya qayyum...', translation: 'دعاء الاستغاثة', source: 'سنن الترمذي', count: 1 },
+                    { id: 'evening_13', title: 'أمسينا على فطرة الإسلام', arabic: 'أَمْسَيْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ، حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِينَ', transliteration: 'Amsayna ala fitratil islam...', translation: 'دعاء المساء', source: 'سنن أحمد', count: 1 },
+                    { id: 'evening_14a', title: 'سبحان الله', arabic: 'سُبْحَانَ اللَّهِ', transliteration: 'Subhanallah', translation: 'مائة مرة', source: 'صحيح مسلم', count: 100 },
+                    { id: 'evening_14b', title: 'الحمد لله', arabic: 'الْحَمْدُ لِلَّهِ', transliteration: 'Alhamdulillah', translation: 'مائة مرة', source: 'صحيح مسلم', count: 100 },
+                    { id: 'evening_14c', title: 'الله أكبر', arabic: 'اللَّهُ أَكْبَرُ', transliteration: 'Allahu akbar', translation: 'مائة مرة', source: 'صحيح مسلم', count: 100 },
+                    { id: 'evening_14d', title: 'لا إله إلا الله', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', transliteration: 'La ilaha illallah wahdahu la sharika lah...', translation: 'مائة مرة', source: 'صحيح الترمذي', count: 100 }
+                ],
+                sleep: [
+                    { id: 'sleep_1', title: 'آية الكرسي', arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ', transliteration: 'Allahu la ilaha illa huwal hayyul qayyum', translation: 'تُقرأ عند النوم', source: 'سورة البقرة: 255', count: 1 },
+                    { id: 'sleep_2', title: 'آخر سورة البقرة', arabic: 'آمَنَ الرَّسُولُ بِمَا أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ ۚ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ ۚ وَقَالُوا سَمِعْنَا وَأَطَعْنَا ۖ غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ', transliteration: 'Amanar-rasulu bima unzila ilayhi...', translation: 'من آخر سورة البقرة', source: 'سورة البقرة: 285-286', count: 1 },
+                    { id: 'sleep_3', title: 'تسبيح النوم', arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ', transliteration: 'Subhanakallahumma wa bihamdika...', translation: 'دعاء النوم', source: 'صحيح البخاري ومسلم', count: 1 },
+                    { id: 'sleep_4', title: 'باسمك اللهم', arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا', transliteration: 'Bismika allahumma amutu wa ahya', translation: 'دعاء النوم', source: 'صحيح البخاري', count: 1 },
+                    { id: 'sleep_5', title: 'اللهم قني عذابك', arabic: 'اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ', transliteration: 'Allahumma qini adhabaka yawma tabathu ibadak', translation: 'ثلاث مرات', source: 'صحيح الترمذي', count: 3 },
+                    { id: 'sleep_6', title: 'تسبيح النوم', arabic: 'سُبْحَانَ اللَّهِ (33 مرة) الْحَمْدُ لِلَّهِ (33 مرة) اللَّهُ أَكْبَرُ (34 مرة)', transliteration: 'Subhanallah (33), Alhamdulillah (33), Allahu Akbar (34)', translation: 'تسبيح النوم', source: 'صحيح البخاري ومسلم', count: 100 }
+                ],
+                prayer: [
+                    { id: 'prayer_1', title: 'الاستغفار', arabic: 'أَسْتَغْفِرُ اللَّهَ، أَسْتَغْفِرُ اللَّهَ، أَسْتَغْفِرُ اللَّهَ', transliteration: 'Astaghfirullah, Astaghfirullah, Astaghfirullah', translation: 'ثلاث مرات بعد الصلاة', source: 'صحيح مسلم', count: 3 },
+                    { id: 'prayer_2', title: 'اللهم أنت السلام', arabic: 'اللَّهُمَّ أَنْتَ السَّلَامُ، وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ', transliteration: 'Allahumma antas-salam...', translation: 'بعد كل صلاة', source: 'صحيح مسلم', count: 1 },
+                    { id: 'prayer_3', title: 'التهليل', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. اللَّهُمَّ لَا مَانِعَ لِمَا أَعْطَيْتَ، وَلَا مُعْطِيَ لِمَا مَنَعْتَ، وَلَا يَنْفَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ', transliteration: 'La ilaha illallah wahdahu la sharika lah...', translation: 'بعد كل صلاة', source: 'صحيح البخاري ومسلم', count: 1 },
+                    { id: 'prayer_4', title: 'سبحان الله', arabic: 'سُبْحَانَ اللَّهِ', transliteration: 'Subhanallah', translation: '33 مرة بعد الصلاة', source: 'صحيح مسلم', count: 33 },
+                    { id: 'prayer_5', title: 'الحمد لله', arabic: 'الْحَمْدُ لِلَّهِ', transliteration: 'Alhamdulillah', translation: '33 مرة بعد الصلاة', source: 'صحيح مسلم', count: 33 },
+                    { id: 'prayer_6', title: 'الله أكبر', arabic: 'اللَّهُ أَكْبَرُ', transliteration: 'Allahu Akbar', translation: '33 مرة بعد الصلاة', source: 'صحيح مسلم', count: 33 },
+                    { id: 'prayer_7', title: 'تم المائة', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', transliteration: 'La ilaha illallah wahdahu la sharika lah...', translation: 'تكملة المائة', source: 'صحيح مسلم', count: 1 },
+                    { id: 'prayer_8', title: 'آية الكرسي', arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ', transliteration: 'Allahu la ilaha illa huwal hayyul qayyum', translation: 'من قرأها دبر كل صلاة لم يمنعه من دخول الجنة إلا الموت', source: 'سورة البقرة: 255', count: 1 },
+                    { id: 'prayer_9', title: 'قل هو الله أحد', arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ * اللَّهُ الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ', transliteration: 'Qul huwal lahul ahad', translation: 'بعد الفجر والمغرب (3 مرات)، بعد باقي الصلوات (مرة)', source: 'سورة الإخلاص', count: 3 },
+                    { id: 'prayer_10', title: 'قل أعوذ برب الفلق', arabic: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * مِنْ شَرِّ مَا خَلَقَ * وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ * وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ * وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ', transliteration: 'Qul auzu birabbil falaq', translation: 'بعد الفجر والمغرب (3 مرات)، بعد باقي الصلوات (مرة)', source: 'سورة الفلق', count: 3 },
+                    { id: 'prayer_11', title: 'قل أعوذ برب الناس', arabic: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ * مَلِكِ النَّاسِ * إِلَهِ النَّاسِ * مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ * الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ * مِنَ الْجِنَّةِ وَالنَّاسِ', transliteration: 'Qul auzu birabbin nas', translation: 'بعد الفجر والمغرب (3 مرات)، بعد باقي الصلوات (مرة)', source: 'سورة الناس', count: 3 },
+                    { id: 'prayer_12', title: 'لا إله إلا الله', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، يُحْيِي وَيُمِيتُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', transliteration: 'La ilaha illallah wahdahu la sharika lah...', translation: '10 مرات بعد الفجر والمغرب', source: 'صحيح الترمذي', count: 10 }
+                ],
+                general: [
+                    { id: 'general_1', title: 'دعاء الكرب', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ', transliteration: 'La ilaha illallahul azimul halim...', translation: 'دعاء الكرب والهم', source: 'صحيح البخاري', count: 3 },
+                    { id: 'general_2', title: 'دعاء الهم والحزن', arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ الْهَمِّ وَالْحُزْنِ، وَأَعُوذُ بِكَ مِنْ الْعَجْزِ وَالْكَسَلِ، وَأَعُوذُ بِكَ مِنْ الْجُبْنِ وَالْبُخْلِ، وَأَعُوذُ بِكَ مِنْ قَهْرِ الرِّجَالِ وَضَيْعَةِ الدَّيْنِ', transliteration: 'Allahumma inni auzu bika minal hammi wal hazan...', translation: 'دعاء الهم والحزن', source: 'صحيح البخاري', count: 1 },
+                    { id: 'general_3', title: 'دعاء الهدى', arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُقَى وَالْعَفَافَ وَالْغِنَى', transliteration: 'Allahumma inni asalukal hada wat-tuqa...', translation: 'دعاء الهدى والتقى', source: 'صحيح مسلم', count: 3 },
+                    { id: 'general_4', title: 'ربنا آتنا', arabic: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', transliteration: 'Rabbana atina fid-dunya hasanatan...', translation: 'من سورة البقرة', source: 'سورة البقرة: 201', count: 3 },
+                    { id: 'general_5', title: 'ربنا لا تزغ', arabic: 'رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً إِنَّكَ أَنْتَ الْوَهَّابُ', transliteration: 'Rabbana la tuzigh qulubana...', translation: 'من سورة آل عمران', source: 'سورة آل عمران: 8', count: 1 },
+                    { id: 'general_6', title: 'حسبي الله', arabic: 'حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ', transliteration: 'Hasbiyallahu la ilaha illa huwa...', translation: 'سبع مرات', source: 'سورة التوبة: 129', count: 7 },
+                    { id: 'general_7', title: 'يا حي يا قيوم', arabic: 'يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ أَصْلِحْ لِي شَأْنِي كُلَّهُ وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ', transliteration: 'Ya hayyu ya qayyum birahmatika astaghith...', translation: 'دعاء الاستغاثة', source: 'سنن الترمذي', count: 3 },
+                    { id: 'general_8', title: 'اللهم اغفر لي', arabic: 'اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ، دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ وَعَلَانِيَتَهُ وَسِرَّهُ', transliteration: 'Allahumma ghfir li dhanbi kullahu...', translation: 'دعاء الاستغفار', source: 'صحيح مسلم', count: 1 },
+                    { id: 'general_9', title: 'سيد الاستغفار', arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي، فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ', transliteration: 'Allahumma anta rabbi...', translation: 'من قالها موقنًا بها دخل الجنة', source: 'صحيح البخاري', count: 1 }
+                ]
+            };
+
+            return data[category] || [];
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

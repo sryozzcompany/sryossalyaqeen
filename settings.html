@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الإعدادات - طريق اليقين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #0d4d2f;
+            --secondary-green: #1a6b47;
+            --light-green: #2d8a5e;
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --dark-overlay: rgba(0, 0, 0, 0.3);
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            --card-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            font-family: 'Cairo', 'Amiri', sans-serif;
+            background: linear-gradient(180deg, var(--primary-green) 0%, var(--secondary-green) 50%, var(--light-green) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            padding-bottom: 30px;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .header-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: #fff;
+        }
+
+        .header-title {
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-title .arabic {
+            font-family: 'Amiri', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            display: block;
+        }
+
+        .header-title .english {
+            font-family: 'Cairo', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 1px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 20px 15px;
+        }
+
+        /* Settings Card */
+        .settings-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+        }
+
+        .settings-card h2 {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-card h2 .icon {
+            font-size: 24px;
+        }
+
+        .settings-card p {
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+        }
+
+        .settings-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .settings-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .settings-card ul li {
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            padding-right: 20px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .settings-card ul li::before {
+            content: '•';
+            position: absolute;
+            right: 0;
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Donation Section */
+        .donation-section {
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .donation-section h2 {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .donation-section p {
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+
+        .donation-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .donation-btn {
+            background: linear-gradient(145deg, var(--gold) 0%, #c4a030 100%);
+            color: var(--primary-green);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .donation-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .donation-btn .icon {
+            font-size: 20px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-section h2 {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .contact-section p {
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .contact-email {
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 12px 20px;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gold-light);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Decorative Elements */
+        .pattern-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='%23d4af37' fill-opacity='1'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-right: 4px solid var(--gold);
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 13px;
+        }
+
+        /* Location Settings Card */
+        .location-settings-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .location-settings-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+        }
+
+        .location-option {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .location-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .location-option.active {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.15);
+        }
+
+        .location-option-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .location-option-icon {
+            font-size: 24px;
+        }
+
+        .location-option-title {
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold-light);
+        }
+
+        .location-option-desc {
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .location-select-wrapper {
+            margin-top: 12px;
+            display: none;
+        }
+
+        .location-option.active .location-select-wrapper {
+            display: block;
+        }
+
+        .location-select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            color: var(--primary-green);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%230d4d2f' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 15px center;
+            padding-left: 40px;
+        }
+
+        .location-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+        }
+
+        .location-status {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(212, 175, 55, 0.15);
+            border-radius: 10px;
+            border-right: 3px solid var(--gold);
+            font-size: 13px;
+            color: var(--gold-light);
+            display: none;
+        }
+
+        .location-status.show {
+            display: block;
+        }
+
+        .location-btn {
+            width: 100%;
+            background: linear-gradient(145deg, var(--gold) 0%, #c4a030 100%);
+            color: var(--primary-green);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .location-option.active .location-btn {
+            display: block;
+        }
+
+        .location-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .location-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .section-title {
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold-light);
+            margin: 20px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 380px) {
+            .header-title .arabic {
+                font-size: 18px;
+            }
+
+            .settings-card h2,
+            .donation-section h2,
+            .contact-section h2 {
+                font-size: 18px;
+            }
+
+            .settings-card p,
+            .donation-section p,
+            .contact-section p {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pattern-overlay"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-icon" onclick="window.history.back()">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                </svg>
+            </div>
+            <div class="header-title">
+                <span class="arabic">الإعدادات</span>
+                <span class="english">Settings</span>
+            </div>
+            <div class="header-icon"></div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-section">
+            <!-- Location Settings Card -->
+            <div class="location-settings-card">
+                <h2><span class="icon">📍</span> إعدادات الموقع</h2>
+                <p style="margin-bottom: 15px;">
+                    اختر طريقة تحديد موقعك لحساب أوقات الصلاة واتجاه القبلة بدقة
+                </p>
+
+                <!-- Manual Location Option -->
+                <div class="location-option" id="manualOption" onclick="selectLocationMode('manual')">
+                    <div class="location-option-header">
+                        <span class="location-option-icon">🏙️</span>
+                        <span class="location-option-title">تحديد يدوي</span>
+                    </div>
+                    <p class="location-option-desc">اختر مدينة من القائمة لتحديد موقعك يدوياً</p>
+                    <div class="location-select-wrapper">
+                        <select class="location-select" id="citySelect" onchange="saveManualLocation()">
+                            <option value="">-- اختر مدينة --</option>
+                            <option value="tetouan">تطوان، المغرب</option>
+                            <option value="casablanca">الدار البيضاء، المغرب</option>
+                            <option value="rabat">الرباط، المغرب</option>
+                            <option value="marrakech">مراكش، المغرب</option>
+                            <option value="fes">فاس، المغرب</option>
+                            <option value="tangier">طنجة، المغرب</option>
+                            <option value="agadir">أكادير، المغرب</option>
+                            <option value="meknes">مكناس، المغرب</option>
+                            <option value="oujda">وجدة، المغرب</option>
+                            <option value="kenitra">القنيطرة، المغرب</option>
+                            <option value="cairo">القاهرة، مصر</option>
+                            <option value="alexandria">الإسكندرية، مصر</option>
+                            <option value="riyadh">الرياض، السعودية</option>
+                            <option value="makkah">مكة المكرمة، السعودية</option>
+                            <option value="madinah">المدينة المنورة، السعودية</option>
+                            <option value="jeddah">جدة، السعودية</option>
+                            <option value="dammam">الدمام، السعودية</option>
+                            <option value="dubai">دبي، الإمارات</option>
+                            <option value="abudhabi">أبوظبي، الإمارات</option>
+                            <option value="kuwait">الكويت، الكويت</option>
+                            <option value="doha">الدوحة، قطر</option>
+                            <option value="manama">المنامة، البحرين</option>
+                            <option value="muscat">مسقط، عمان</option>
+                            <option value="amman">عمان، الأردن</option>
+                            <option value="beirut">بيروت، لبنان</option>
+                            <option value="damascus">دمشق، سوريا</option>
+                            <option value="jerusalem">القدس، فلسطين</option>
+                            <option value="istanbul">إسطنبول، تركيا</option>
+                            <option value="ankara">أنقرة، تركيا</option>
+                            <option value="paris">باريس، فرنسا</option>
+                            <option value="london">لندن، المملكة المتحدة</option>
+                            <option value="berlin">برلين، ألمانيا</option>
+                            <option value="newyork">نيويورك، الولايات المتحدة</option>
+                            <option value="losangeles">لوس أنجلوس، الولايات المتحدة</option>
+                        </select>
+                    </div>
+                    <div class="location-status" id="manualStatus"></div>
+                </div>
+
+                <!-- Automatic Location Option -->
+                <div class="location-option" id="autoOption" onclick="selectLocationMode('auto')">
+                    <div class="location-option-header">
+                        <span class="location-option-icon">📡</span>
+                        <span class="location-option-title">تحديد تلقائي</span>
+                    </div>
+                    <p class="location-option-desc">استخدم GPS لتحديد موقعك الحالي تلقائياً</p>
+                    <button class="location-btn" id="detectLocationBtn">
+                        📍 تحديد موقعي الحالي
+                    </button>
+                    <div class="location-status" id="autoStatus"></div>
+                </div>
+            </div>
+
+            <!-- Privacy Policy Card -->
+            <div class="settings-card">
+                <h2><span class="icon">🔒</span> سياسة الخصوصية</h2>
+                <p>
+                    نحن نحترم خصوصية المستخدمين ونلتزم بحمايتها.
+                </p>
+                <p>
+                    يعمل هذا التطبيق مع الاتصال بالإنترنت لتقديم خدماته، ولا يعتمد على خوادم خاصة لتخزين بيانات المستخدمين.
+                </p>
+                <p>
+                    لا يقوم التطبيق بجمع أو تخزين أو مشاركة أي بيانات شخصية للمستخدم، مثل الاسم أو البريد الإلكتروني أو الموقع الجغرافي.
+                </p>
+                <p>
+                    جميع البيانات داخل التطبيق (مثل الإعدادات أو موضع القراءة) تُحفظ محليًا على جهاز المستخدم فقط، ولا يتم إرسالها إلى أي جهة خارجية.
+                </p>
+                <p>
+                    لا نشارك أي معلومات مع أطراف ثالثة.
+                </p>
+                <p>
+                    نلتزم باتخاذ الإجراءات المناسبة لحماية خصوصية المستخدم.
+                </p>
+            </div>
+
+            <!-- Donation Section -->
+            <div class="donation-section">
+                <h2>🤲 دعم التطبيق</h2>
+                <p>
+                    نعمل باستمرار على تطوير وتحسين تطبيق "طريق اليقين" ليكون أداة نافعة ومفيدة للمستخدمين.
+                </p>
+                <p>
+                    دعمك للتطبيق يساعدنا على:
+                </p>
+                <ul>
+                    <li>إضافة ميزات جديدة وتحسينات مستقبلية</li>
+                    <li>تحسين أداء التطبيق وتجربة المستخدم</li>
+                    <li>تغطية تكاليف التشغيل والصيانة</li>
+                    <li>الاستمرار في توفير التطبيق مجانًا</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    يمكنكم دعم التطبيق اختياريًا عبر:
+                </p>
+                <div class="donation-options">
+                    <button class="donation-btn" onclick="window.open('https://www.paypal.com/paypalme/sryossofficial', '_blank')">
+                        <span class="icon">💳</span>
+                        التبرع عبر PayPal
+                    </button>
+                </div>
+                <p style="margin-top: 12px; font-size: 12px; opacity: 0.8;">
+                    التبرع اختياري تمامًا ولا يؤثر على استخدام التطبيق أو محتواه.
+                </p>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="contact-section">
+                <h2>📧 تواصل معنا</h2>
+                <p>
+                    في حال وجود أي استفسار أو اقتراح أو الإبلاغ عن مشكلة داخل التطبيق، يسعدنا تواصلكم معنا عبر البريد الإلكتروني:
+                </p>
+                <div class="contact-email">
+                    contact.sryozz@gmail.com
+                </div>
+                <p style="margin-top: 15px; font-size: 13px;">
+                    نحرص على مراجعة جميع الرسائل والرد عليها في أقرب وقت ممكن.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cities database with coordinates
+        const CITIES = {
+            tetouan: { name: 'تطوان، المغرب', nameEn: 'Tetouan, Morocco', lat: 35.5889, lng: -5.3626 },
+            casablanca: { name: 'الدار البيضاء، المغرب', nameEn: 'Casablanca, Morocco', lat: 33.5731, lng: -7.5898 },
+            rabat: { name: 'الرباط، المغرب', nameEn: 'Rabat, Morocco', lat: 34.0209, lng: -6.8416 },
+            marrakech: { name: 'مراكش، المغرب', nameEn: 'Marrakech, Morocco', lat: 31.6295, lng: -7.9811 },
+            fes: { name: 'فاس، المغرب', nameEn: 'Fes, Morocco', lat: 34.0181, lng: -5.0078 },
+            tangier: { name: 'طنجة، المغرب', nameEn: 'Tangier, Morocco', lat: 35.7595, lng: -5.8340 },
+            agadir: { name: 'أكادير، المغرب', nameEn: 'Agadir, Morocco', lat: 30.4278, lng: -9.5981 },
+            meknes: { name: 'مكناس، المغرب', nameEn: 'Meknes, Morocco', lat: 33.8935, lng: -5.5473 },
+            oujda: { name: 'وجدة، المغرب', nameEn: 'Oujda, Morocco', lat: 34.6867, lng: -1.9114 },
+            kenitra: { name: 'القنيطرة، المغرب', nameEn: 'Kenitra, Morocco', lat: 34.2610, lng: -6.5802 },
+            cairo: { name: 'القاهرة، مصر', nameEn: 'Cairo, Egypt', lat: 30.0444, lng: 31.2357 },
+            alexandria: { name: 'الإسكندرية، مصر', nameEn: 'Alexandria, Egypt', lat: 31.2001, lng: 29.9187 },
+            riyadh: { name: 'الرياض، السعودية', nameEn: 'Riyadh, Saudi Arabia', lat: 24.7136, lng: 46.6753 },
+            makkah: { name: 'مكة المكرمة، السعودية', nameEn: 'Makkah, Saudi Arabia', lat: 21.4225, lng: 39.8262 },
+            madinah: { name: 'المدينة المنورة، السعودية', nameEn: 'Madinah, Saudi Arabia', lat: 24.5247, lng: 39.5692 },
+            jeddah: { name: 'جدة، السعودية', nameEn: 'Jeddah, Saudi Arabia', lat: 21.5433, lng: 39.1728 },
+            dammam: { name: 'الدمام، السعودية', nameEn: 'Dammam, Saudi Arabia', lat: 26.4262, lng: 50.0626 },
+            dubai: { name: 'دبي، الإمارات', nameEn: 'Dubai, UAE', lat: 25.2048, lng: 55.2708 },
+            abudhabi: { name: 'أبوظبي، الإمارات', nameEn: 'Abu Dhabi, UAE', lat: 24.4539, lng: 54.3773 },
+            kuwait: { name: 'الكويت، الكويت', nameEn: 'Kuwait City, Kuwait', lat: 29.3759, lng: 47.9774 },
+            doha: { name: 'الدوحة، قطر', nameEn: 'Doha, Qatar', lat: 25.2854, lng: 51.5310 },
+            manama: { name: 'المنامة، البحرين', nameEn: 'Manama, Bahrain', lat: 26.0667, lng: 50.5577 },
+            muscat: { name: 'مسقط، عمان', nameEn: 'Muscat, Oman', lat: 23.5859, lng: 58.3829 },
+            amman: { name: 'عمان، الأردن', nameEn: 'Amman, Jordan', lat: 31.9539, lng: 35.9106 },
+            beirut: { name: 'بيروت، لبنان', nameEn: 'Beirut, Lebanon', lat: 33.8938, lng: 35.5018 },
+            damascus: { name: 'دمشق، سوريا', nameEn: 'Damascus, Syria', lat: 33.5138, lng: 36.2765 },
+            jerusalem: { name: 'القدس، فلسطين', nameEn: 'Jerusalem, Palestine', lat: 31.7683, lng: 35.2137 },
+            istanbul: { name: 'إسطنبول، تركيا', nameEn: 'Istanbul, Turkey', lat: 41.0082, lng: 28.9784 },
+            ankara: { name: 'أنقرة، تركيا', nameEn: 'Ankara, Turkey', lat: 39.9334, lng: 32.8597 },
+            paris: { name: 'باريس، فرنسا', nameEn: 'Paris, France', lat: 48.8566, lng: 2.3522 },
+            london: { name: 'لندن، المملكة المتحدة', nameEn: 'London, UK', lat: 51.5074, lng: -0.1278 },
+            berlin: { name: 'برلين، ألمانيا', nameEn: 'Berlin, Germany', lat: 52.5200, lng: 13.4050 },
+            newyork: { name: 'نيويورك، الولايات المتحدة', nameEn: 'New York, USA', lat: 40.7128, lng: -74.0060 },
+            losangeles: { name: 'لوس أنجلوس، الولايات المتحدة', nameEn: 'Los Angeles, USA', lat: 34.0522, lng: -118.2437 }
+        };
+
+        // Initialize location settings
+        let currentMode = 'manual';
+        let currentCity = 'tetouan';
+
+        function initLocationSettings() {
+            // Load saved settings
+            const savedMode = localStorage.getItem('locationMode');
+            const savedCity = localStorage.getItem('selectedCity');
+            const savedAutoLocation = localStorage.getItem('autoLocation');
+
+            if (savedMode) {
+                currentMode = savedMode;
+                currentCity = savedCity || 'tetouan';
+            }
+
+            // Set the UI based on saved settings
+            selectLocationMode(currentMode, false);
+
+            if (currentMode === 'manual' && savedCity) {
+                document.getElementById('citySelect').value = savedCity;
+                updateManualStatus(savedCity);
+            } else if (currentMode === 'auto' && savedAutoLocation) {
+                try {
+                    const locationData = JSON.parse(savedAutoLocation);
+                    updateAutoStatus(true, locationData);
+                } catch (e) {
+                    // Ignore parsing errors
+                }
+            }
+        }
+
+        function selectLocationMode(mode, save = true) {
+            currentMode = mode;
+
+            // Remove active class from both options
+            document.getElementById('manualOption').classList.remove('active');
+            document.getElementById('autoOption').classList.remove('active');
+
+            // Add active class to selected option
+            if (mode === 'manual') {
+                document.getElementById('manualOption').classList.add('active');
+            } else {
+                document.getElementById('autoOption').classList.add('active');
+            }
+
+            // Save the setting
+            if (save) {
+                localStorage.setItem('locationMode', mode);
+
+                // Clear the other mode's status
+                if (mode === 'manual') {
+                    document.getElementById('autoStatus').classList.remove('show');
+                    localStorage.removeItem('autoLocation');
+
+                    // Trigger manual location save if city is selected
+                    const citySelect = document.getElementById('citySelect');
+                    if (citySelect.value) {
+                        saveManualLocation();
+                    }
+                } else {
+                    document.getElementById('manualStatus').classList.remove('show');
+                    localStorage.removeItem('selectedCity');
+                }
+            }
+        }
+
+        function saveManualLocation() {
+            const citySelect = document.getElementById('citySelect');
+            const selectedCity = citySelect.value;
+
+            if (!selectedCity) {
+                document.getElementById('manualStatus').classList.remove('show');
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('selectedCity', selectedCity);
+            localStorage.setItem('locationMode', 'manual');
+            localStorage.removeItem('autoLocation');
+
+            updateManualStatus(selectedCity);
+        }
+
+        function updateManualStatus(cityKey) {
+            const city = CITIES[cityKey];
+            if (city) {
+                const statusEl = document.getElementById('manualStatus');
+                statusEl.innerHTML = `✅ تم تحديد الموقع: ${city.name}`;
+                statusEl.classList.add('show');
+            }
+        }
+
+        function detectLocation(event) {
+            event.stopPropagation();
+            event.preventDefault(); // Prevent any default behavior
+
+            if (!navigator.geolocation) {
+                updateAutoStatus(false, null, 'المتصفح لا يدعم تحديد الموقع');
+                return;
+            }
+
+            const btn = document.getElementById('detectLocationBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري التحديد...';
+
+            updateAutoStatus(false, null, '⏳ جاري تحديد موقعك...');
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const locationData = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+
+                    // Save to localStorage
+                    localStorage.setItem('autoLocation', JSON.stringify(locationData));
+                    localStorage.setItem('locationMode', 'auto');
+                    localStorage.removeItem('selectedCity');
+
+                    updateAutoStatus(true, locationData);
+
+                    btn.disabled = false;
+                    btn.textContent = '📍 تحديد موقعي الحالي';
+                },
+                function(error) {
+                    let errorMessage = '';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = 'تم رفض إذن تحديد الموقع. يرجى السماح بالوصول للموقع من إعدادات المتصفح.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = 'معلومات الموقع غير متوفرة.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = 'انتهت مهلة طلب الموقع.';
+                            break;
+                        default:
+                            errorMessage = 'حدث خطأ أثناء تحديد الموقع.';
+                    }
+
+                    updateAutoStatus(false, null, errorMessage);
+
+                    btn.disabled = false;
+                    btn.textContent = '📍 تحديد موقعي الحالي';
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        function updateAutoStatus(success, locationData, customMessage) {
+            const statusEl = document.getElementById('autoStatus');
+
+            if (success && locationData) {
+                statusEl.innerHTML = `✅ تم تحديد الموقع تلقائياً<br>
+                    <span style="font-size: 11px; opacity: 0.8;">
+                        الدقة: ${Math.round(locationData.accuracy)} متر
+                    </span>`;
+                statusEl.classList.add('show');
+            } else if (customMessage) {
+                statusEl.innerHTML = `❌ ${customMessage}`;
+                statusEl.classList.add('show');
+            } else {
+                statusEl.classList.remove('show');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initLocationSettings();
+
+            // Add click event listener for GPS button
+            const detectBtn = document.getElementById('detectLocationBtn');
+            if (detectBtn) {
+                detectBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    detectLocation(e);
+                });
+            }
+        });
+
+        // Add haptic feedback simulation for Android
+        document.querySelectorAll('.header-icon, .donation-btn, .location-btn').forEach(function(element) {
+            element.addEventListener('touchstart', function() {
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+
+        // Disable text selection for app-like feel
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        // Prevent double-tap zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

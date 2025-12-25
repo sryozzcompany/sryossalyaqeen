@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الزكاة - طريق اليقين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #0d4d2f;
+            --secondary-green: #1a6b47;
+            --light-green: #2d8a5e;
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --paypal-blue: #0070ba;
+            --paypal-blue-dark: #005ea6;
+        }
+
+        body {
+            font-family: 'Cairo', 'Amiri', sans-serif;
+            background: linear-gradient(180deg, var(--primary-green) 0%, var(--secondary-green) 50%, var(--light-green) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            font-size: 28px;
+            color: #fff;
+            cursor: pointer;
+            padding: 8px;
+            margin-right: 10px;
+        }
+
+        .header-title {
+            text-align: center;
+            flex: 1;
+            font-family: 'Amiri', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 20px 15px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-radius: 16px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+        }
+
+        .card-title {
+            font-family: 'Amiri', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+
+        .card-text p {
+            margin-bottom: 12px;
+        }
+
+        /* Donation Section */
+        .donation-section {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .donation-title {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+        }
+
+        .paypal-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(145deg, var(--paypal-blue) 0%, var(--paypal-blue-dark) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            padding: 16px 35px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 112, 186, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .paypal-button:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 112, 186, 0.5);
+        }
+
+        .paypal-icon {
+            font-size: 24px;
+        }
+
+        .donation-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .donation-info p {
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            color: var(--primary-green);
+            margin: 5px 0;
+        }
+
+        /* Verse Section */
+        .verse-card {
+            background: linear-gradient(145deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            border-radius: 16px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verse-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+        }
+
+        .verse-text {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            line-height: 2;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .verse-reference {
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+
+        /* Pattern Overlay */
+        .pattern-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='%23d4af37' fill-opacity='1'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 380px) {
+            .header-title {
+                font-size: 18px;
+            }
+
+            .card-title {
+                font-size: 18px;
+            }
+
+            .card-text {
+                font-size: 13px;
+            }
+
+            .verse-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pattern-overlay"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="back-button" onclick="window.location.href='index.html'">→</div>
+            <div class="header-title">الزكاة</div>
+            <div style="width: 40px;"></div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-section">
+            <!-- Quranic Verse -->
+            <div class="verse-card">
+                <div class="verse-text">
+                    ﴿خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا﴾
+                </div>
+                <div class="verse-reference">سورة التوبة: الآية 103</div>
+            </div>
+
+            <!-- What is Zakat -->
+            <div class="card">
+                <h2 class="card-title">ما هي الزكاة؟</h2>
+                <div class="card-text">
+                    <p>الزكاة هي الركن الثالث من أركان الإسلام، وهي صدقة واجبة على المسلم إذا بلغ ماله نصاباً معيناً وحال عليه الحول.</p>
+                    <p>وهي تطهير للنفس ومال المزكي، وتُعين على إعانة الفقراء والمحتاجين في المجتمع الإسلامي.</p>
+                </div>
+            </div>
+
+            <!-- Importance of Zakat -->
+            <div class="card">
+                <h2 class="card-title">أهمية الزكاة</h2>
+                <div class="card-text">
+                    <p><strong>تطهير النفس:</strong> تُزكي النفس وتُنقيها من البخل والشح.</p>
+                    <p><strong>مساعدة المحتاجين:</strong> تسد حاجة الفقراء وتُحقق التكافل الاجتماعي.</p>
+                    <p><strong>بركة في المال:</strong> تزيد المال وتُبارك فيه كما وعدنا الله تعالى.</p>
+                    <p><strong>تطهير المال:</strong> تُزكي المال وتُطهره من حقوق الآخرين.</p>
+                </div>
+            </div>
+
+            <!-- Donation Section -->
+            <div class="card donation-section">
+                <h2 class="card-title donation-title">تبرع عبر PayPal</h2>
+                <p style="margin-bottom: 20px; color: #555; font-family: 'Cairo', sans-serif; font-size: 14px;">
+                    أدفع زكاتك أو تبرعك عبر PayPal بسهولة وأمان
+                </p>
+                <a href="https://www.paypal.com/paypalme/sryossofficial" class="paypal-button" target="_blank">
+                    <span class="paypal-icon">💳</span>
+                    <span>PayPal</span>
+                </a>
+                <div class="donation-info">
+                    <p>🤲 جزاكم الله خيراً على تبرعاتكم</p>
+                    <p>✅ تبرع آمن ومؤمن عبر PayPal</p>
+                    <p>💵 ادفع زكاتك بسهولة من أي مكان في العالم</p>
+                </div>
+            </div>
+
+            <!-- Zakat Amounts -->
+            <div class="card">
+                <h2 class="card-title">نِسَب الزكاة</h2>
+                <div class="card-text">
+                    <p><strong>زكاة الذهب والفضة:</strong> 2.5% إذا بلغ النصاب (85 غرام من الذهب أو 595 غرام من الفضة).</p>
+                    <p><strong>زكاة الأوراق المالية:</strong> 2.5% إذا بلغت قيمتها نصاب الذهب أو الفضة.</p>
+                    <p><strong>زكاة المحاصيل والثمار:</strong> 10% إذا سُقيت بلا مؤونة، و5% إذا سُقيت بمؤونة.</p>
+                    <p><strong>زكاة الإبل والبقر والغنم:</strong> حسب عددها مع مقادير محددة شرعاً.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Haptic feedback
+        document.querySelectorAll('.paypal-button').forEach(function(element) {
+            element.addEventListener('touchstart', function() {
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+
+        // Disable text selection
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        // Prevent double-tap zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

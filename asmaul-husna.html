@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>أسماء الله الحسنى - The Beautiful Names of Allah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #0d4d2f;
+            --secondary-green: #1a6b47;
+            --light-green: #2d8a5e;
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            --card-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            font-family: 'Cairo', 'Amiri', sans-serif;
+            background: linear-gradient(180deg, var(--primary-green) 0%, var(--secondary-green) 50%, var(--light-green) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .back-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: #fff;
+            transform: rotate(180deg);
+        }
+
+        .header-title {
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-title .arabic {
+            font-family: 'Amiri', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            display: block;
+        }
+
+        .header-title .english {
+            font-family: 'Cairo', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 1px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .placeholder {
+            width: 40px;
+        }
+
+        /* Title Section */
+        .title-section {
+            text-align: center;
+            padding: 20px 15px;
+            margin-bottom: 20px;
+        }
+
+        .title-section h1 {
+            font-family: 'Amiri', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .title-section .verse {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.8;
+            padding: 0 10px;
+        }
+
+        /* Names Grid */
+        .names-section {
+            padding: 0 15px;
+        }
+
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .name-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+            border-radius: 16px;
+            padding: 18px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .name-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+        }
+
+        .name-card:active {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .name-card .number {
+            font-family: 'Cairo', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--light-green);
+            background: rgba(13, 77, 47, 0.1);
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+
+        .name-card .arabic-name {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-align: center;
+        }
+
+        .name-card .english-name {
+            font-family: 'Cairo', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--secondary-green);
+            text-align: center;
+        }
+
+        /* Decorative Elements */
+        .pattern-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30L30 0z' fill='%23d4af37' fill-opacity='1'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 380px) {
+            .header-title .arabic {
+                font-size: 18px;
+            }
+
+            .title-section h1 {
+                font-size: 26px;
+            }
+
+            .title-section .verse {
+                font-size: 16px;
+            }
+
+            .names-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .name-card .arabic-name {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pattern-overlay"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="back-btn" onclick="window.location.href='index.html'">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8-8-8z"/>
+                </svg>
+            </div>
+            <div class="header-title">
+                <span class="arabic">أسماء الله الحسنى</span>
+                <span class="english">Asmaul Husna</span>
+            </div>
+            <div class="placeholder"></div>
+        </header>
+
+        <!-- Title Section -->
+        <section class="title-section">
+            <h1>أسماء الله الحسنى</h1>
+            <p class="verse">﴿وَلِلَّهِ الْأَسْمَاءُ الْحُسْنَىٰ فَادْعُوهُ بِهَا ۖ وَذَرُوا الَّذِينَ يُلْحِدُونَ فِي أَسْمَائِهِ ۚ سَيُجْزَوْنَ مَا كَانُوا يَعْمَلُونَ﴾</p>
+            <p style="font-size: 13px; color: rgba(255, 255, 255, 0.8); margin-top: 10px;">سورة الأعراف - الآية 180</p>
+        </section>
+
+        <!-- Names Grid -->
+        <section class="names-section">
+            <div class="names-grid" id="namesGrid">
+                <!-- Names will be loaded here by JavaScript -->
+                <noscript>
+                    <div style="grid-column: 1/-1; text-align: center; color: white; padding: 20px;">
+                        <p>Please enable JavaScript to view the 99 Names of Allah</p>
+                    </div>
+                </noscript>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // The 99 Beautiful Names of Allah (Asmaul Husna)
+        const asmaulHusna = [
+            { number: 1, arabic: "الرَّحْمَنُ", english: "Ar-Rahman", meaning: "The Most Gracious" },
+            { number: 2, arabic: "الرَّحِيمُ", english: "Ar-Rahim", meaning: "The Most Merciful" },
+            { number: 3, arabic: "الْمَلِكُ", english: "Al-Malik", meaning: "The King" },
+            { number: 4, arabic: "الْقُدُّوسُ", english: "Al-Quddus", meaning: "The Most Holy" },
+            { number: 5, arabic: "السَّلَامُ", english: "As-Salam", meaning: "The Source of Peace" },
+            { number: 6, arabic: "الْمُؤْمِنُ", english: "Al-Mu'min", meaning: "The Guardian of Faith" },
+            { number: 7, arabic: "الْمُهَيْمِنُ", english: "Al-Muhaymin", meaning: "The Protector" },
+            { number: 8, arabic: "الْعَزِيزُ", english: "Al-Aziz", meaning: "The Mighty" },
+            { number: 9, arabic: "الْجَبَّارُ", english: "Al-Jabbar", meaning: "The Compeller" },
+            { number: 10, arabic: "الْمُتَكَبِّرُ", english: "Al-Mutakabbir", meaning: "The Greatest" },
+            { number: 11, arabic: "الْخَالِقُ", english: "Al-Khaliq", meaning: "The Creator" },
+            { number: 12, arabic: "الْبَارِئُ", english: "Al-Bari'", meaning: "The Evolver" },
+            { number: 13, arabic: "الْمُصَوِّرُ", english: "Al-Musawwir", meaning: "The Fashioner" },
+            { number: 14, arabic: "الْغَفَّارُ", english: "Al-Ghaffar", meaning: "The Forgiver" },
+            { number: 15, arabic: "الْقَهَّارُ", english: "Al-Qahhar", meaning: "The Dominant" },
+            { number: 16, arabic: "الْوَهَّابُ", english: "Al-Wahhab", meaning: "The Bestower" },
+            { number: 17, arabic: "الرَّزَّاقُ", english: "Ar-Razzaq", meaning: "The Provider" },
+            { number: 18, arabic: "الْفَتَّاحُ", english: "Al-Fattah", meaning: "The Opener" },
+            { number: 19, arabic: "اَلْعَلِيْمُ", english: "Al-Alim", meaning: "The All-Knowing" },
+            { number: 20, arabic: "الْقَابِضُ", english: "Al-Qabid", meaning: "The Constrictor" },
+            { number: 21, arabic: "الْبَاسِطُ", english: "Al-Basit", meaning: "The Expander" },
+            { number: 22, arabic: "الْخَافِضُ", english: "Al-Khafid", meaning: "The Abaser" },
+            { number: 23, arabic: "الرَّافِعُ", english: "Ar-Rafi'", meaning: "The Exalter" },
+            { number: 24, arabic: "الْمُعِزُّ", english: "Al-Mu'izz", meaning: "The Honourer" },
+            { number: 25, arabic: "المُذِلُّ", english: "Al-Mudhill", meaning: "The Humiliator" },
+            { number: 26, arabic: "السَّمِيعُ", english: "As-Sami'", meaning: "The All-Hearing" },
+            { number: 27, arabic: "الْبَصِيرُ", english: "Al-Basir", meaning: "The All-Seeing" },
+            { number: 28, arabic: "الْحَكَمُ", english: "Al-Hakam", meaning: "The Judge" },
+            { number: 29, arabic: "الْعَدْلُ", english: "Al-Adl", meaning: "The Just" },
+            { number: 30, arabic: "اللَّطِيفُ", english: "Al-Latif", meaning: "The Subtle One" },
+            { number: 31, arabic: "الْخَبِيرُ", english: "Al-Khabir", meaning: "The Aware" },
+            { number: 32, arabic: "الْحَلِيمُ", english: "Al-Halim", meaning: "The Forbearing" },
+            { number: 33, arabic: "الْعَظِيمُ", english: "Al-Azim", meaning: "The Magnificent" },
+            { number: 34, arabic: "الْغَفُورُ", english: "Al-Ghafur", meaning: "The Forgiving" },
+            { number: 35, arabic: "الشَّكُورُ", english: "Ash-Shakur", meaning: "The Appreciative" },
+            { number: 36, arabic: "الْعَلِيُّ", english: "Al-Ali", meaning: "The Most High" },
+            { number: 37, arabic: "الْكَبِيرُ", english: "Al-Kabir", meaning: "The Great" },
+            { number: 38, arabic: "الْحَفِيظُ", english: "Al-Hafiz", meaning: "The Preserver" },
+            { number: 39, arabic: "المُقيِت", english: "Al-Muqit", meaning: "The Nourisher" },
+            { number: 40, arabic: "الْحسِيبُ", english: "Al-Hasib", meaning: "The Reckoner" },
+            { number: 41, arabic: "الْجَلِيلُ", english: "Al-Jalil", meaning: "The Majestic" },
+            { number: 42, arabic: "الْكَرِيمُ", english: "Al-Karim", meaning: "The Generous" },
+            { number: 43, arabic: "الرَّقِيبُ", english: "Ar-Raqib", meaning: "The Watchful" },
+            { number: 44, arabic: "الْمُجِيبُ", english: "Al-Mujib", meaning: "The Responsive" },
+            { number: 45, arabic: "الْوَاسِعُ", english: "Al-Wasi'", meaning: "The All-Encompassing" },
+            { number: 46, arabic: "الْحَكِيمُ", english: "Al-Hakim", meaning: "The Wise" },
+            { number: 47, arabic: "الْوَدُودُ", english: "Al-Wadud", meaning: "The Loving" },
+            { number: 48, arabic: "الْمَجِيدُ", english: "Al-Majid", meaning: "The Most Glorious" },
+            { number: 49, arabic: "الْبَاعِثُ", english: "Al-Ba'ith", meaning: "The Resurrector" },
+            { number: 50, arabic: "الشَّهِيدُ", english: "Ash-Shahid", meaning: "The Witness" },
+            { number: 51, arabic: "الْحَقُّ", english: "Al-Haqq", meaning: "The Truth" },
+            { number: 52, arabic: "الْوَكِيلُ", english: "Al-Wakil", meaning: "The Trustee" },
+            { number: 53, arabic: "الْقَوِيُّ", english: "Al-Qawi", meaning: "The Most Strong" },
+            { number: 54, arabic: "الْمَتِينُ", english: "Al-Matin", meaning: "The Firm One" },
+            { number: 55, arabic: "الْوَلِيُّ", english: "Al-Wali", meaning: "The Protecting Friend" },
+            { number: 56, arabic: "الْحَمِيدُ", english: "Al-Hamid", meaning: "The Praiseworthy" },
+            { number: 57, arabic: "الْمُحْصِي", english: "Al-Muhsi", meaning: "The Reckoner" },
+            { number: 58, arabic: "الْمُبْدِئُ", english: "Al-Mubdi", meaning: "The Originator" },
+            { number: 59, arabic: "الْمُعِيدُ", english: "Al-Mu'id", meaning: "The Restorer" },
+            { number: 60, arabic: "الْمُحْيِي", english: "Al-Muhyi", meaning: "The Giver of Life" },
+            { number: 61, arabic: "اَلْمُمِيتُ", english: "Al-Mumit", meaning: "The Causer of Death" },
+            { number: 62, arabic: "الْحَيُّ", english: "Al-Hayy", meaning: "The Ever Living" },
+            { number: 63, arabic: "الْقَيُّومُ", english: "Al-Qayyum", meaning: "The Self-Subsisting" },
+            { number: 64, arabic: "الْوَاجِدُ", english: "Al-Wajid", meaning: "The Finder" },
+            { number: 65, arabic: "الْمَاجِدُ", english: "Al-Majid", meaning: "The Noble" },
+            { number: 66, arabic: "الْواحِدُ", english: "Al-Wahid", meaning: "The Unique" },
+            { number: 67, arabic: "اَلاَحَدُ", english: "Al-Ahad", meaning: "The One" },
+            { number: 68, arabic: "الصَّمَدُ", english: "As-Samad", meaning: "The Eternal" },
+            { number: 69, arabic: "الْقَادِرُ", english: "Al-Qadir", meaning: "The Capable" },
+            { number: 70, arabic: "الْمُقْتَدِرُ", english: "Al-Muqtadir", meaning: "The Powerful" },
+            { number: 71, arabic: "الْمُقَدِّمُ", english: "Al-Muqaddim", meaning: "The Expediter" },
+            { number: 72, arabic: "الْمُؤَخِّرُ", english: "Al-Mu'akhkhir", meaning: "The Delayer" },
+            { number: 73, arabic: "الأوَّلُ", english: "Al-Awwal", meaning: "The First" },
+            { number: 74, arabic: "الآخِرُ", english: "Al-Akhir", meaning: "The Last" },
+            { number: 75, arabic: "الظَّاهِرُ", english: "Az-Zahir", meaning: "The Manifest" },
+            { number: 76, arabic: "الْبَاطِنُ", english: "Al-Batin", meaning: "The Hidden" },
+            { number: 77, arabic: "الْوَالِي", english: "Al-Wali", meaning: "The Governor" },
+            { number: 78, arabic: "الْمُتَعَالِي", english: "Al-Muta'ali", meaning: "The Most Exalted" },
+            { number: 79, arabic: "الْبَرُّ", english: "Al-Barr", meaning: "The Source of Goodness" },
+            { number: 80, arabic: "التَّوَّابُ", english: "At-Tawwab", meaning: "The Acceptor of Repentance" },
+            { number: 81, arabic: "الْمُنْتَقِمُ", english: "Al-Muntaqim", meaning: "The Avenger" },
+            { number: 82, arabic: "العَفُوُّ", english: "Al-Afuw", meaning: "The Pardoner" },
+            { number: 83, arabic: "الرَّؤُوفُ", english: "Ar-Ra'uf", meaning: "The Compassionate" },
+            { number: 84, arabic: "مَالِكُ الْمُلْكِ", english: "Malik-ul-Mulk", meaning: "Master of the Kingdom" },
+            { number: 85, arabic: "ذُوالْجَلاَلِ وَالإكْرَامِ", english: "Dhul-Jalali wal-Ikram", meaning: "Lord of Majesty" },
+            { number: 86, arabic: "الْمُقْسِطُ", english: "Al-Muqsit", meaning: "The Equitable" },
+            { number: 87, arabic: "الْجَامِعُ", english: "Al-Jami'", meaning: "The Gatherer" },
+            { number: 88, arabic: "الْغَنِيُّ", english: "Al-Ghani", meaning: "The Self-Sufficient" },
+            { number: 89, arabic: "الْمُغْنِي", english: "Al-Mughni", meaning: "The Enricher" },
+            { number: 90, arabic: "اَلْمَانِعُ", english: "Al-Mani'", meaning: "The Preventer" },
+            { number: 91, arabic: "الضَّارَّ", english: "Ad-Darr", meaning: "The Distresser" },
+            { number: 92, arabic: "النَّافِعُ", english: "An-Nafi'", meaning: "The Propitious" },
+            { number: 93, arabic: "النُّورُ", english: "An-Nur", meaning: "The Light" },
+            { number: 94, arabic: "الْهَادِي", english: "Al-Hadi", meaning: "The Guide" },
+            { number: 95, arabic: "الْبَدِيعُ", english: "Al-Badi'", meaning: "The Incomparable" },
+            { number: 96, arabic: "اَلْبَاقِي", english: "Al-Baqi", meaning: "The Everlasting" },
+            { number: 97, arabic: "الْوَارِثُ", english: "Al-Warith", meaning: "The Inheritor" },
+            { number: 98, arabic: "الرَّشِيدُ", english: "Ar-Rashid", meaning: "The Guide to the Right" },
+            { number: 99, arabic: "الصَّبُورُ", english: "As-Sabur", meaning: "The Patient" }
+        ];
+
+        // Load names into grid
+        function loadNames() {
+            const grid = document.getElementById('namesGrid');
+            asmaulHusna.forEach(name => {
+                const card = document.createElement('div');
+                card.className = 'name-card';
+                card.innerHTML = `
+                    <span class="number">${name.number}</span>
+                    <span class="arabic-name">${name.arabic}</span>
+                    <span class="english-name">${name.english}</span>
+                `;
+
+                // Add click handler
+                card.addEventListener('click', () => showNameDetail(name));
+
+                // Add haptic feedback
+                card.addEventListener('touchstart', function() {
+                    if (navigator.vibrate) {
+                        navigator.vibrate(10);
+                    }
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Show name detail on click
+        function showNameDetail(name) {
+            alert(`${name.arabic}\n${name.english}\n\n${name.meaning}`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNames();
+        });
+
+        // Disable text selection for app-like feel
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        // Prevent double-tap zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
